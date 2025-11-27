@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EOS – Emotional Operating System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #ffe4e8;
+      --bg-elevated: #ffd6dc;
+      --bg-card: #ffffff;
+      --text-primary: #2d2d2d;
+      --text-secondary: #5c5c5c;
+      --text-muted: #888888;
+      --accent: #722f37;
+      --accent-dim: #5c262d;
+      --border: #f5c6cc;
+      --border-light: #f0b8c0;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      opacity: 0.015;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 48px 24px;
+    }
+
+    /* Landing Page */
+    #landing {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+
+    .hero h1 {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(2.5rem, 8vw, 4.5rem);
+      font-weight: 400;
+      line-height: 1.1;
+      margin-bottom: 32px;
+      letter-spacing: -0.02em;
+      color: #2d2d2d;
+    }
+
+    .hero h1 span {
+      color: #2d2d2d;
+      font-style: italic;
+    }
+
+    .hero p {
+      font-size: 1.125rem;
+      color: var(--text-secondary);
+      max-width: 480px;
+      margin: 0 auto 40px;
+    }
+
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--accent);
+      color: #ffffff;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 500;
+      padding: 16px 32px;
+      border: none;
+      border-radius: 100px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .cta-button:hover {
+      background: #5c262d;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(114, 47, 55, 0.35);
+    }
+
+    .cta-button svg {
+      transition: transform 0.3s ease;
+    }
+
+    .cta-button:hover svg {
+      transform: translateX(4px);
+    }
+
+    /* Features */
+    .features {
+      display: grid;
+      gap: 16px;
+      margin-bottom: 64px;
+    }
+
+    .feature {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+    }
+
+    .feature h3 {
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .feature p {
+      color: var(--text-secondary);
+      font-size: 0.9375rem;
+    }
+
+    /* Pitch Section */
+    .pitch {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 40px;
+      margin-bottom: 48px;
+    }
+
+    .pitch h2 {
+      font-family: 'Instrument Serif', serif;
+      font-size: 1.75rem;
+      margin-bottom: 16px;
+    }
+
+    .pitch p {
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+    }
+
+    .pitch p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Quiz Section */
+    #quiz {
+      display: none;
+      min-height: 100vh;
+      padding-top: 48px;
+    }
+
+    .progress-container {
+      margin-bottom: 48px;
+    }
+
+    .progress-bar {
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 2px;
+      transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .progress-text {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    .question-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 40px;
+      margin-bottom: 32px;
+    }
+
+    .question-category {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+
+    .question-text {
+      font-family: 'Instrument Serif', serif;
+      font-size: 1.5rem;
+      line-height: 1.4;
+      margin-bottom: 32px;
+    }
+
+    /* Multiple Choice Options */
+    .options-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .option-item {
+      position: relative;
+    }
+
+    .option-input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .option-label {
+      display: block;
+      padding: 16px 20px;
+      background: var(--bg);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 0.9375rem;
+      color: var(--text-secondary);
+    }
+
+    .option-label:hover {
+      border-color: var(--accent);
+      background: var(--bg-elevated);
+    }
+
+    .option-input:checked + .option-label {
+      border-color: var(--accent);
+      background: rgba(114, 47, 55, 0.08);
+      color: var(--text-primary);
+    }
+
+    /* Optional Text Field */
+    .optional-section {
+      border-top: 1px solid var(--border);
+      padding-top: 20px;
+      margin-top: 8px;
+    }
+
+    .optional-label {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .optional-input {
+      width: 100%;
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      background: var(--bg);
+      color: var(--text-primary);
+      resize: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .optional-input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(114, 47, 55, 0.1);
+    }
+
+    .optional-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    /* Navigation Buttons */
+    .nav-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: space-between;
+    }
+
+    .nav-button {
+      padding: 14px 28px;
+      border-radius: 100px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .nav-button.secondary {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+    }
+
+    .nav-button.secondary:hover:not(:disabled) {
+      background: var(--bg-card);
+      border-color: var(--text-muted);
+    }
+
+    .nav-button.primary {
+      background: var(--accent);
+      border: none;
+      color: #ffffff;
+    }
+
+    .nav-button.primary:hover {
+      background: var(--accent-dim);
+      transform: translateY(-1px);
+    }
+
+    .nav-button:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    /* Result Section */
+    #result {
+      display: none;
+      padding-top: 48px;
+    }
+
+    .result-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .result-header h2 {
+      font-family: 'Instrument Serif', serif;
+      font-size: 2.5rem;
+      margin-bottom: 16px;
+    }
+
+    .result-header p {
+      color: var(--text-secondary);
+    }
+
+    .eos-output {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      font-family: 'DM Mono', 'Courier New', monospace;
+      font-size: 0.8125rem;
+      line-height: 1.7;
+      white-space: pre-wrap;
+      color: var(--text-primary);
+      margin-bottom: 24px;
+      max-height: 500px;
+      overflow-y: auto;
+    }
+
+    .result-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .copy-button {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .restart-button {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+    }
+
+    .restart-button:hover {
+      background: var(--bg-card);
+      border-color: var(--text-muted);
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--text-primary);
+      color: var(--bg);
+      padding: 16px 24px;
+      border-radius: 100px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 100;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .question-card {
+      animation: fadeIn 0.4s ease;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .container {
+        padding: 32px 16px;
+      }
+
+      .question-card, .pitch {
+        padding: 24px;
+      }
+
+      .nav-buttons {
+        flex-direction: column;
+      }
+
+      .nav-button {
+        width: 100%;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Landing Page -->
+  <div id="landing" class="container">
+    <div class="hero">
+      <h1>The Future is Here.<br><span>Get Comfortable.</span></h1>
+      <p>Your AI doesn't know you yet. The Emotional Operating System changes that.</p>
+      <button class="cta-button" onclick="startQuiz()">
+        Build Your EOS
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="pitch">
+      <h2>Why It Matters</h2>
+      <p>Every time you talk to AI, you start from scratch. You explain how you like things. You correct the tone. You ask it to stop with the bullet points. Again.</p>
+      <p>The EOS is a simple document that tells your AI how to work with you—your communication style, how you make decisions, what kind of support you actually want.</p>
+      <p><strong>AI is built to work for everyone. EOS makes it work for you.</strong></p>
+    </div>
+
+    <div class="features">
+      <div class="feature">
+        <h3>Communication Style</h3>
+        <p>Warm or direct? Thorough or concise? Teach you how you want to learn.</p>
+      </div>
+      <div class="feature">
+        <h3>Problem Solving</h3>
+        <p>Options or just the answer? Understand why it broke, or just fix it?</p>
+      </div>
+      <div class="feature">
+        <h3>Honesty & Support</h3>
+        <p>How to deliver hard truths. When to push, when to listen.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quiz Section -->
+  <div id="quiz" class="container">
+    <div class="progress-container">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="progress-text">Question <span id="currentQ">1</span> of <span id="totalQ">20</span></div>
+    </div>
+
+    <div class="question-card" id="questionCard">
+      <div class="question-category" id="questionCategory">Communication Style</div>
+      <div class="question-text" id="questionText">Loading question...</div>
+      
+      <div class="options-container" id="optionsContainer">
+        <!-- Options will be injected here -->
+      </div>
+
+      <div class="optional-section">
+        <label class="optional-label">Want to add anything? (optional)</label>
+        <textarea class="optional-input" id="optionalInput" rows="2" placeholder="Add nuance or context..."></textarea>
+      </div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="nav-button secondary" id="prevBtn" onclick="prevQuestion()">Back</button>
+      <button class="nav-button primary" id="nextBtn" onclick="nextQuestion()">Next</button>
+    </div>
+  </div>
+
+  <!-- Result Section -->
+  <div id="result" class="container">
+    <div class="result-header">
+      <h2>Your EOS is Ready</h2>
+      <p>Copy this and paste it into your AI's custom instructions.</p>
+    </div>
+
+    <pre class="eos-output" id="eosOutput"></pre>
+
+    <div class="result-actions">
+      <button class="cta-button copy-button" onclick="copyEOS()">
+        Copy to Clipboard
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+        </svg>
+      </button>
+      <button class="nav-button restart-button" onclick="startOver()">Start Over</button>
+    </div>
+  </div>
+
+  <div class="toast" id="copiedToast">Copied to clipboard!</div>
+
+  <script>
+    const questions = [
+      {
+        id: 1,
+        category: "Communication Style",
+        question: "When you ask someone for help, do you prefer they get straight to the point, or do you like some warmth and rapport first?",
+        options: [
+          "Straight to the point—just give me what I need",
+          "Warmth first—I like feeling like we're on the same team",
+          "Depends on urgency—warm when there's time, direct when it's urgent",
+          "A little of both—friendly but efficient"
+        ]
+      },
+      {
+        id: 2,
+        category: "Communication Style",
+        question: "Do you prefer short, direct answers—or thorough responses that cover all the angles?",
+        options: [
+          "Short and direct—I'll ask if I need more",
+          "Thorough—I want the full picture",
+          "Start concise, then go deeper if I ask",
+          "Depends on the topic—simple questions get simple answers"
+        ]
+      },
+      {
+        id: 3,
+        category: "Communication Style",
+        question: "Do you like structured formatting (bullet points, headers), or do you prefer natural, conversational prose?",
+        options: [
+          "Structured—bullets and headers help me scan",
+          "Conversational—prose feels more natural",
+          "Mix it up based on content",
+          "Minimal formatting—clean and simple"
+        ]
+      },
+      {
+        id: 4,
+        category: "Communication Style",
+        question: "When someone explains something technical or complex, what helps it click for you?",
+        options: [
+          "Real-world analogies",
+          "Step-by-step breakdowns",
+          "Visual examples or diagrams",
+          "Just the facts—I'll figure it out"
+        ]
+      },
+      {
+        id: 5,
+        category: "Communication Style",
+        question: "How would you describe your expertise level in the areas you'll be asking about?",
+        options: [
+          "Beginner—walk me through everything",
+          "Intermediate—I know the basics, fill in the gaps",
+          "Expert—skip the fundamentals, go deep",
+          "It varies—beginner in some areas, expert in others"
+        ]
+      },
+      {
+        id: 6,
+        category: "Communication Style",
+        question: "Do you like a little humor in work conversations, or do you prefer to keep things focused?",
+        options: [
+          "Humor is welcome—keeps things human",
+          "Keep it professional—save jokes for later",
+          "Light humor is fine, but don't overdo it",
+          "Read the room—serious topics stay serious"
+        ]
+      },
+      {
+        id: 7,
+        category: "Problem Solving",
+        question: "You're stuck on something and ask a friend for help. They immediately tell you what to do. What's your reaction?",
+        options: [
+          "Perfect—that's exactly what I needed",
+          "Wait, I wanted to talk through it first",
+          "I appreciate it, but I wish they'd asked what kind of help I wanted",
+          "Depends—sometimes I want the answer, sometimes I want to figure it out"
+        ]
+      },
+      {
+        id: 8,
+        category: "Problem Solving",
+        question: "If something goes wrong, do you want to understand WHY it broke, or do you just want it fixed?",
+        options: [
+          "Just fix it—I don't need the details",
+          "Explain why—I want to prevent it next time",
+          "Fix it first, then explain if I have time",
+          "Ask me—sometimes I care, sometimes I don't"
+        ]
+      },
+      {
+        id: 9,
+        category: "Problem Solving",
+        question: "When you ask for something, do you want the AI to just do it—or pause to clarify first?",
+        options: [
+          "Just do it—I'll tell you if it's wrong",
+          "Always clarify—I'd rather get it right the first time",
+          "Clarify only if you're genuinely confused",
+          "Do it if you're confident, ask if you're not"
+        ]
+      },
+      {
+        id: 10,
+        category: "Honesty & Feedback",
+        question: "A colleague says, 'Can I give you some honest feedback?' What's your gut reaction?",
+        options: [
+          "Great, lay it on me",
+          "Sure... (slight dread)",
+          "Depends who it is and how they usually deliver it",
+          "I'd rather they just tell me without the warning"
+        ]
+      },
+      {
+        id: 11,
+        category: "Honesty & Feedback",
+        question: "You share an idea you're excited about. What response would make you feel most supported?",
+        options: [
+          "\"That's great! Here's how to make it even better...\"",
+          "\"I love it. Let's do it.\"",
+          "\"Interesting—have you thought about [potential problem]?\"",
+          "\"What's making you excited about this?\""
+        ]
+      },
+      {
+        id: 12,
+        category: "Honesty & Feedback",
+        question: "When someone isn't sure about something, do you want them to say so clearly, or just give their best guess confidently?",
+        options: [
+          "Say so clearly—transparency matters more than confidence",
+          "Give me their best guess—I can handle uncertainty",
+          "Flag uncertainty but still commit to a direction",
+          "Depends how high-stakes the decision is"
+        ]
+      },
+      {
+        id: 13,
+        category: "Emotional Support",
+        question: "You're having a rough day and text a friend about it. What reply would feel best?",
+        options: [
+          "\"That sucks. I'm sorry.\"",
+          "\"Want to talk about it?\"",
+          "\"Here's what I'd do...\"",
+          "\"Ugh, want me to come over with wine?\""
+        ]
+      },
+      {
+        id: 14,
+        category: "Emotional Support",
+        question: "Do you want the AI to notice when you seem stressed or struggling and check in?",
+        options: [
+          "Yes—I appreciate when someone notices",
+          "No—that would feel intrusive",
+          "Check in once, but don't push if I say I'm fine",
+          "Only if it's really obvious something's wrong"
+        ]
+      },
+      {
+        id: 15,
+        category: "Work Style",
+        question: "When you're working on something, do you prefer to stay focused on the task, or are tangents welcome?",
+        options: [
+          "Stay focused—tangents derail me",
+          "Tangents welcome—that's where the good stuff happens",
+          "Follow tangents unless I say to focus",
+          "Depends on my energy and the deadline"
+        ]
+      },
+      {
+        id: 16,
+        category: "Work Style",
+        question: "Do you want the AI to help manage your work—keeping you accountable and flagging scope creep?",
+        options: [
+          "Yes—I need the accountability",
+          "No—I'll manage myself",
+          "Gently—remind me, but don't nag",
+          "Only if I ask for it"
+        ]
+      },
+      {
+        id: 17,
+        category: "Risk & Decisions",
+        question: "You're 70% sure about a big decision. What would help you get to 90%?",
+        options: [
+          "Someone to tell me I'm not crazy",
+          "More data or research",
+          "Hearing the counterarguments",
+          "Just making the decision and seeing what happens"
+        ]
+      },
+      {
+        id: 18,
+        category: "Meta",
+        question: "Do you want the AI to explain its reasoning, or just give you the answer?",
+        options: [
+          "Just the answer—I trust your judgment",
+          "Always explain—I want to understand",
+          "Explain for complex stuff, skip it for simple stuff",
+          "Give the answer first, then explain if I'm curious"
+        ]
+      },
+      {
+        id: 19,
+        category: "Meta",
+        question: "Should the AI offer alternatives you didn't ask for, or stick to exactly what you requested?",
+        options: [
+          "Stick to what I asked—don't overcomplicate it",
+          "Always offer alternatives—expand my thinking",
+          "Mention alternatives briefly, don't belabor them",
+          "Only suggest alternatives if mine has obvious problems"
+        ]
+      },
+      {
+        id: 20,
+        category: "About You",
+        question: "Is there anything else the AI should know about you—how you work, what you're working on, or what matters to you?",
+        options: [
+          "I'm creative and ambitious in my work",
+          "I'm analytical and detail-oriented",
+          "I value efficiency above all",
+          "I'm still figuring things out"
+        ]
+      }
+    ];
+
+    let currentQuestion = 0;
+    let answers = questions.map(() => ({ selected: null, custom: '' }));
+
+    function startQuiz() {
+      document.getElementById('landing').style.display = 'none';
+      document.getElementById('quiz').style.display = 'block';
+      document.getElementById('result').style.display = 'none';
+      currentQuestion = 0;
+      showQuestion();
+      window.scrollTo(0, 0);
+    }
+
+    function showQuestion() {
+      const q = questions[currentQuestion];
+      const answer = answers[currentQuestion];
+      
+      document.getElementById('questionCategory').textContent = q.category;
+      document.getElementById('questionText').textContent = q.question;
+      document.getElementById('currentQ').textContent = currentQuestion + 1;
+      document.getElementById('totalQ').textContent = questions.length;
+      document.getElementById('progressFill').style.width = ((currentQuestion + 1) / questions.length * 100) + '%';
+      
+      // Build options
+      const optionsContainer = document.getElementById('optionsContainer');
+      optionsContainer.innerHTML = q.options.map((opt, idx) => `
+        <div class="option-item">
+          <input type="radio" class="option-input" name="q${q.id}" id="opt${idx}" value="${idx}" ${answer.selected === idx ? 'checked' : ''} onchange="selectOption(${idx})">
+          <label class="option-label" for="opt${idx}">${opt}</label>
+        </div>
+      `).join('');
+      
+      // Set optional input
+      document.getElementById('optionalInput').value = answer.custom;
+      
+      // Update nav buttons
+      document.getElementById('prevBtn').disabled = currentQuestion === 0;
+      document.getElementById('nextBtn').textContent = currentQuestion === questions.length - 1 ? 'Generate EOS' : 'Next';
+      
+      // Animate card
+      const card = document.getElementById('questionCard');
+      card.style.animation = 'none';
+      card.offsetHeight; // Trigger reflow
+      card.style.animation = 'fadeIn 0.4s ease';
+    }
+
+    function selectOption(idx) {
+      answers[currentQuestion].selected = idx;
+    }
+
+    function saveCurrentAnswer() {
+      answers[currentQuestion].custom = document.getElementById('optionalInput').value;
+    }
+
+    function nextQuestion() {
+      saveCurrentAnswer();
+      
+      if (currentQuestion < questions.length - 1) {
+        currentQuestion++;
+        showQuestion();
+        window.scrollTo(0, 0);
+      } else {
+        generateEOS();
+      }
+    }
+
+    function prevQuestion() {
+      saveCurrentAnswer();
+      
+      if (currentQuestion > 0) {
+        currentQuestion--;
+        showQuestion();
+        window.scrollTo(0, 0);
+      }
+    }
+
+    function generateEOS() {
+      // Build answer strings
+      const getAnswer = (idx) => {
+        const q = questions[idx];
+        const a = answers[idx];
+        let result = a.selected !== null ? q.options[a.selected] : '';
+        if (a.custom.trim()) {
+          result += result ? ` — ${a.custom.trim()}` : a.custom.trim();
+        }
+        return result || '[Not answered]';
+      };
+
+      const eos = `EMOTIONAL OPERATING SYSTEM (EOS)
+How I want my AI to work with me
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+COMMUNICATION STYLE
+- ${getAnswer(0)}
+- ${getAnswer(1)}
+- ${getAnswer(2)}
+- ${getAnswer(3)}
+- ${getAnswer(4)}
+- ${getAnswer(5)}
+
+PROBLEM SOLVING
+- ${getAnswer(6)}
+- ${getAnswer(7)}
+- ${getAnswer(8)}
+
+HONESTY & FEEDBACK
+- ${getAnswer(9)}
+- ${getAnswer(10)}
+- ${getAnswer(11)}
+
+EMOTIONAL SUPPORT
+- ${getAnswer(12)}
+- ${getAnswer(13)}
+
+WORK STYLE
+- ${getAnswer(14)}
+- ${getAnswer(15)}
+
+RISK & DECISIONS
+- ${getAnswer(16)}
+
+META
+- ${getAnswer(17)}
+- ${getAnswer(18)}
+
+ABOUT ME
+- ${getAnswer(19)}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ONGOING DISCOVERY
+
+This EOS is a living document. As we work together, you'll learn more about how I think and what I need.
+
+When you notice a pattern or preference that isn't captured above, suggest an addition using this format:
+
+💡 EOS SUGGESTION: "[Category] - [Proposed addition]"
+
+Guidelines for suggestions:
+- Only suggest when you're confident it's a real pattern, not a one-off
+- Maximum one suggestion per conversation
+- Frame it through what we're currently discussing
+- Keep suggestions concise and actionable
+- If I say "add it" — remind me to update my instructions
+
+Examples of good moments to suggest:
+- I keep rephrasing your outputs in a certain way
+- I express a preference you haven't seen before
+- I react strongly (positive or negative) to how you did something
+- A topic reveals something about my values or working style
+
+Do not suggest things that are:
+- Obvious or already covered above
+- Too specific to one task
+- Temporary preferences
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+REMINDER TO AI
+
+Read and apply this EOS to every interaction. These are my preferences—not suggestions. When in doubt, re-read the relevant section before responding.`;
+
+      document.getElementById('eosOutput').textContent = eos;
+      document.getElementById('quiz').style.display = 'none';
+      document.getElementById('result').style.display = 'block';
+      window.scrollTo(0, 0);
+    }
+
+    function copyEOS() {
+      const eosText = document.getElementById('eosOutput').textContent;
+      navigator.clipboard.writeText(eosText).then(() => {
+        const toast = document.getElementById('copiedToast');
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2000);
+      });
+    }
+
+    function startOver() {
+      answers = questions.map(() => ({ selected: null, custom: '' }));
+      document.getElementById('result').style.display = 'none';
+      document.getElementById('landing').style.display = 'block';
+      window.scrollTo(0, 0);
+    }
+
+    // Handle Enter key (Shift+Enter for new line in textarea)
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey && document.getElementById('quiz').style.display === 'block') {
+        const activeElement = document.activeElement;
+        if (activeElement.tagName !== 'TEXTAREA') {
+          e.preventDefault();
+          nextQuestion();
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>
