@@ -4,15 +4,15 @@
   --primary: #881337;
   /* Burgundy */
   --primary-light: #9f1239;
-  --primary-dark: #1f2937;
+  --primary-dark: #36454F;
   --secondary: #fb7185;
   /* Rose */
   --accent: #fecdd3;
   --background: #ffe4e6;
   /* Rose Pink Background */
   --surface: #ffffff;
-  --text-main: #1f2937;
-  /* Dark Grey for text */
+  --text-main: #36454F;
+  /* Charcoal for text */
   --text-muted: #881337;
   /* Lighter Burgundy for muted text */
 
