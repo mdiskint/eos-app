@@ -3,12 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import { questions } from '../data/questions';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import MilestoneOverlay from './MilestoneOverlay';
 
 const Quiz = () => {
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [answers, setAnswers] = useState({});
     const [optionalText, setOptionalText] = useState({});
     const [justSelected, setJustSelected] = useState(false);
+    const [activeMilestone, setActiveMilestone] = useState(null);
     const navigate = useNavigate();
     const textareaRef = useRef(null);
 
@@ -41,6 +43,29 @@ const Quiz = () => {
     const handleNext = () => {
         if (!hasAnswered) return;
 
+        const questionsCompleted = currentQuestion + 1;
+
+        // Check for milestones (5, 10, 15, 20)
+        if (questionsCompleted % 5 === 0) {
+            setActiveMilestone(questionsCompleted);
+            return;
+        }
+
+        proceedToNext();
+    };
+
+    const handleMilestoneComplete = () => {
+        const milestone = activeMilestone;
+        setActiveMilestone(null);
+
+        if (milestone === 20) {
+            finishQuiz();
+        } else {
+            setCurrentQuestion(curr => curr + 1);
+        }
+    };
+
+    const proceedToNext = () => {
         if (isLastQuestion) {
             finishQuiz();
         } else {
@@ -62,6 +87,15 @@ const Quiz = () => {
 
     return (
         <div className="min-h-screen flex items-center justify-center p-4 py-12">
+            <AnimatePresence>
+                {activeMilestone && (
+                    <MilestoneOverlay
+                        milestone={activeMilestone}
+                        onComplete={handleMilestoneComplete}
+                    />
+                )}
+            </AnimatePresence>
+
             <div className="quiz-container">
                 {/* Progress Section */}
                 <div className="quiz-progress">
