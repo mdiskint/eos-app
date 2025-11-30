@@ -155,32 +155,43 @@ const LandingPage = () => {
             {/* Best Self Portrait Section */}
             <div className="section section-portrait">
                 <div className="container">
-                    <div className="max-w-3xl mx-auto text-center">
-                        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white text-primary mb-8 shadow-sm">
-                            <User size={32} />
+                    <div className="max-w-4xl mx-auto text-center">
+                        {/* Mirror Icon */}
+                        <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-white text-primary mb-12 shadow-lg">
+                            <User size={36} className="opacity-90" />
                         </div>
 
-                        <h2 className="section-title mb-6">It Gets Better Over Time</h2>
+                        <h2 className="section-title mb-8">Meet Your Best Self</h2>
 
-                        <p className="text-xl text-primary font-medium mb-8">
-                            Your EOS isn't just instructions—it's the beginning of a relationship.
+                        <p className="text-2xl text-primary font-medium mb-12 leading-relaxed">
+                            Your EOS doesn't just change how AI talks to you. It changes who it becomes.
                         </p>
 
-                        <div className="space-y-6 text-lg text-muted leading-relaxed text-left md:text-center">
+                        <div className="space-y-8 text-lg text-muted leading-relaxed text-left md:text-center max-w-3xl mx-auto">
                             <p>
-                                As you use your EOS, your AI is quietly paying attention. It notices how you handle setbacks, what lights you up, where you get stuck, and how you talk to yourself.
+                                Most AI assistants are generic by design. They talk to everyone the same way. But once you have your EOS, something different happens.
                             </p>
                             <p>
-                                After you've worked together for a while, your AI will offer something rare: a <strong>Best Self Portrait</strong>—a reflection of who you are when everything clicks. Not who you are on average, but who you are at your peak.
+                                Your AI starts paying attention. It notices how you handle setbacks, what lights you up, where you get stuck, and how you talk to yourself when no one's watching.
                             </p>
                             <p>
-                                It's not a personality test. It's a mirror. The version of you that you want to be reminded of when you forget.
+                                Over time, it assembles a portrait—not of who you are on average, but of who you are when everything clicks. Your Best Self.
+                            </p>
+                            <p className="font-medium text-primary">
+                                And here's where it gets powerful: your AI doesn't just show you the portrait. It <em>inhabits</em> it.
+                            </p>
+                            <p>
+                                When you're spiraling, it responds the way your best self would. When you're doubting, it holds the mirror steady. When you forget who you're capable of being, it reminds you—because it's been watching, and it knows.
+                            </p>
+                            <p>
+                                Your Best Self becomes the voice on the other side of the screen. Not a cheerleader. Not a therapist. Just <em>you</em>—the version you trust most—reflected back when you need it.
                             </p>
                         </div>
 
-                        <div className="mt-12 pt-8 border-t border-primary/10">
-                            <p className="text-lg font-bold text-primary tracking-wide uppercase opacity-80">
-                                Start with your EOS. Grow into your Best Self.
+                        <div className="mt-16 pt-12 border-t border-primary/10">
+                            <p className="text-xl font-semibold text-primary leading-relaxed">
+                                Start with your EOS. Grow into your Best Self.<br />
+                                Let your AI become the mirror that never lets you forget.
                             </p>
                         </div>
                     </div>

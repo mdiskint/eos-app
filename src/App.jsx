@@ -1,20 +1,25 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import LandingPage from './components/LandingPage';
 import Quiz from './components/Quiz';
 import Results from './components/Results';
 
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <LandingPage />,
+  },
+  {
+    path: "/quiz",
+    element: <Quiz />,
+  },
+  {
+    path: "/results",
+    element: <Results />,
+  },
+]);
+
 function App() {
-  return (
-    <Router>
-      <div className="app-container">
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/quiz" element={<Quiz />} />
-          <Route path="/results" element={<Results />} />
-        </Routes>
-      </div>
-    </Router>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
