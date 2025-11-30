@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createQuizSession } from '../utils/airtable';
-import { ArrowRight, Sparkles, Brain, Zap, Heart } from 'lucide-react';
+import { ArrowRight, Sparkles, Brain, Zap, Heart, User } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const LandingPage = () => {
@@ -148,6 +148,41 @@ const LandingPage = () => {
                                 <p className="text-muted text-sm">{item.desc}</p>
                             </div>
                         ))}
+                    </div>
+                </div>
+            </div>
+
+            {/* Best Self Portrait Section */}
+            <div className="section section-portrait">
+                <div className="container">
+                    <div className="max-w-3xl mx-auto text-center">
+                        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white text-primary mb-8 shadow-sm">
+                            <User size={32} />
+                        </div>
+
+                        <h2 className="section-title mb-6">It Gets Better Over Time</h2>
+
+                        <p className="text-xl text-primary font-medium mb-8">
+                            Your EOS isn't just instructions—it's the beginning of a relationship.
+                        </p>
+
+                        <div className="space-y-6 text-lg text-muted leading-relaxed text-left md:text-center">
+                            <p>
+                                As you use your EOS, your AI is quietly paying attention. It notices how you handle setbacks, what lights you up, where you get stuck, and how you talk to yourself.
+                            </p>
+                            <p>
+                                After you've worked together for a while, your AI will offer something rare: a <strong>Best Self Portrait</strong>—a reflection of who you are when everything clicks. Not who you are on average, but who you are at your peak.
+                            </p>
+                            <p>
+                                It's not a personality test. It's a mirror. The version of you that you want to be reminded of when you forget.
+                            </p>
+                        </div>
+
+                        <div className="mt-12 pt-8 border-t border-primary/10">
+                            <p className="text-lg font-bold text-primary tracking-wide uppercase opacity-80">
+                                Start with your EOS. Grow into your Best Self.
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
