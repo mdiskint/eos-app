@@ -97,6 +97,15 @@ const Quiz = () => {
             </AnimatePresence>
 
             <div className="quiz-container">
+                {/* Logo Header */}
+                <div className="flex justify-center mb-6">
+                    <img
+                        src="/eos-logo.png"
+                        alt="EOS"
+                        className="h-9 w-auto opacity-80"
+                    />
+                </div>
+
                 {/* Progress Section */}
                 <div className="quiz-progress">
                     <div className="progress-label">

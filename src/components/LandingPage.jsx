@@ -39,9 +39,16 @@ const LandingPage = () => {
                         className="text-center"
                     >
                         {/* Brand Header */}
-                        <div className="brand-header mb-8">
-                            EOS — Emotional Operating System
+                        <div className="mb-8 flex justify-center">
+                            <img
+                                src="/eos-logo.png"
+                                alt="EOS - Emotional Operating System"
+                                className="h-14 w-auto"
+                            />
                         </div>
+                        <p className="text-sm text-muted uppercase tracking-wider mb-4">
+                            Emotional Operating System
+                        </p>
 
                         {/* Main Headline */}
                         <h1 className="hero-title">

@@ -131,6 +131,13 @@ The portrait isn't a personality test. It's a mirror. The version of me I want t
                 className="space-y-8"
             >
                 <div className="text-center space-y-4">
+                    <div className="flex justify-center mb-6">
+                        <img
+                            src="/eos-logo.png"
+                            alt="EOS"
+                            className="h-12 w-auto"
+                        />
+                    </div>
                     <h1 className="text-4xl font-bold text-primary">Your EOS is Ready</h1>
                     <p className="text-muted text-lg">
                         Here is your personal operating manual. Copy this into your AI tools (ChatGPT, Claude, Gemini) as a custom instruction or system prompt.
