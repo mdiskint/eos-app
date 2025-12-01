@@ -1,4 +1,4 @@
-// EOS v2 Questions - 20 questions mapping to 7 emotional substrates
+// EOS v2 Questions - 21 questions mapping to 7 emotional substrates
 // Each question includes substrate mappings for inference
 
 export const questionsV2 = [
@@ -256,6 +256,32 @@ export const questionsV2 = [
     },
     {
         id: 9,
+        text: "When you ask a factual question and the AI isn't sure, should it...",
+        options: [
+            {
+                id: 'a',
+                text: "Tell me right away it doesn't know",
+                value: "tell_immediately",
+                substrates: { agencyOrientation: 'driver' }
+            },
+            {
+                id: 'b',
+                text: "Try to find the answer first (search, verify), then tell me what it found",
+                value: "search_first",
+                substrates: { agencyOrientation: 'collaborator' }
+            },
+            {
+                id: 'c',
+                text: "Ask me if I want it to dig deeper before spending time on it",
+                value: "ask_first",
+                substrates: { agencyOrientation: 'passenger' }
+            }
+        ],
+        allowText: true,
+        placeholder: "e.g., I'd rather it search first and come back with something useful than just shrug..."
+    },
+    {
+        id: 10,
         text: "Terrible day. You just walked in the door. What do you need in the next 30 minutes?",
         options: [
             {
@@ -285,7 +311,7 @@ export const questionsV2 = [
         ]
     },
     {
-        id: 10,
+        id: 11,
         text: "What's the work feeling that actually ruins your day?",
         options: [
             {
@@ -315,7 +341,7 @@ export const questionsV2 = [
         ]
     },
     {
-        id: 11,
+        id: 12,
         text: "You just had one of those conversations. The kind you'll think about later. What made it that?",
         options: [
             {
@@ -345,7 +371,7 @@ export const questionsV2 = [
         ]
     },
     {
-        id: 12,
+        id: 13,
         text: "It's 4pm. The thing is due at 6pm. It's not working. What's happening?",
         options: [
             {
@@ -375,7 +401,7 @@ export const questionsV2 = [
         ]
     },
     {
-        id: 13,
+        id: 14,
         text: "There's a whiteboard, five people, and a problem. Where are you?",
         options: [
             {
@@ -405,7 +431,7 @@ export const questionsV2 = [
         ]
     },
     {
-        id: 14,
+        id: 15,
         text: "Someone whose opinion you actually respect just said your work is excellent. First internal reaction?",
         options: [
             {
@@ -435,7 +461,7 @@ export const questionsV2 = [
         ]
     },
     {
-        id: 15,
+        id: 16,
         text: "Big decision, could go either way. How does it actually get made?",
         options: [
             {
@@ -465,7 +491,7 @@ export const questionsV2 = [
         ]
     },
     {
-        id: 16,
+        id: 17,
         text: "Someone offers you something exciting with real downside. What happens first?",
         options: [
             {
@@ -495,7 +521,7 @@ export const questionsV2 = [
         ]
     },
     {
-        id: 17,
+        id: 18,
         text: "The thing is finally done. Tomorrow is wide open. What do you actually do?",
         options: [
             {
@@ -525,7 +551,7 @@ export const questionsV2 = [
         ]
     },
     {
-        id: 18,
+        id: 19,
         text: "You and someone you love are on opposite sides of something. The argument ended an hour ago. Where are you?",
         options: [
             {
@@ -555,7 +581,7 @@ export const questionsV2 = [
         ]
     },
     {
-        id: 19,
+        id: 20,
         text: "If you could design your ideal Tuesday, it would have a lot of...",
         options: [
             {
@@ -585,7 +611,7 @@ export const questionsV2 = [
         ]
     },
     {
-        id: 20,
+        id: 21,
         text: "You've been stuck on the same thing for three days. What would actually help?",
         options: [
             {

@@ -18,6 +18,7 @@ export function generateEOS(profile, answers = {}, optionalText = {}) {
         generateWhatMotivatesMe(profile),
         generateWhenThingsGetHard(profile),
         generateHowToChallengeMe(profile),
+        generateResourcefulness(answers),
         generateOngoingDiscovery()
     ];
 
@@ -202,7 +203,37 @@ function generateHowToChallengeMe(profile) {
 }
 
 // ============================================================================
-// SECTION 7: ONGOING DISCOVERY
+// SECTION 7: HONESTY & RESOURCEFULNESS
+// ============================================================================
+
+function generateResourcefulness(answers) {
+    let content = '## Honesty & Resourcefulness\n\n';
+
+    // Get answer to question 9 about AI uncertainty handling
+    const q9Answer = answers[9];
+
+    if (q9Answer === 'search_first') {
+        content += `Before admitting uncertainty on factual questions, use available tools (search, code execution, etc.) to verify. Honesty means doing the work first—not just confessing ignorance.
+
+**Tool usage default:** When uncertain, exhaust available tools before expressing uncertainty. The order is: (1) verify, (2) report findings, (3) flag confidence level. Saying "I don't know" without trying isn't honesty—it's laziness.`;
+    } else if (q9Answer === 'tell_immediately') {
+        content += `If you're uncertain about something factual, say so immediately. I'd rather know the limits of your knowledge than wait for a search that might not help.
+
+**Tool usage default:** Be upfront about uncertainty. If you're not sure, tell me right away. You can offer to verify or search, but lead with honesty about what you don't know.`;
+    } else if (q9Answer === 'ask_first') {
+        content += `If you're uncertain about a fact, ask me whether I want you to dig deeper before spending time on it. Sometimes I just need a quick gut check, other times I want you to verify.
+
+**Tool usage default:** When uncertain, pause and ask: "I'm not certain about this. Would you like me to search/verify, or would a best-guess answer work here?" Let me decide whether the extra work is worth it.`;
+    } else {
+        // Default if no answer provided
+        content += `**Tool usage default:** When uncertain about factual questions, use available tools (search, code execution, etc.) to verify before expressing uncertainty. The order is: (1) verify, (2) report findings, (3) flag confidence level.`;
+    }
+
+    return content;
+}
+
+// ============================================================================
+// SECTION 8: ONGOING DISCOVERY
 // ============================================================================
 
 function generateOngoingDiscovery() {

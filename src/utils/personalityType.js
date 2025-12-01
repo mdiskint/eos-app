@@ -50,24 +50,24 @@ const answerMappings = {
         'waited_understood': { COLLABORATOR: 2 }
     },
 
-    // Q12: Deadline pressure (Secondary - weight 2)
-    12: {
+    // Q13: Deadline pressure (Secondary - weight 2)
+    13: {
         'go_harder': { DRIVER: 2, CHALLENGER: 2 },
         'workaround_shortcut': { CREATOR: 2 },
         'brain_freeze': { THINKER: 1, SUPPORTER: 1 },
         'reaching_help': { SUPPORTER: 2, COLLABORATOR: 1 }
     },
 
-    // Q13: Whiteboard (Primary - weight 3)
-    13: {
+    // Q14: Whiteboard (Primary - weight 3)
+    14: {
         'leading_organizing': { DRIVER: 3, CHALLENGER: 1 },
         'debating_building': { COLLABORATOR: 3 },
         'listening_adding': { SUPPORTER: 2 },
         'thinking_quietly': { THINKER: 3 }
     },
 
-    // Q20: When stuck - MOST IMPORTANT (Primary - weight 3, used as tiebreaker)
-    20: {
+    // Q21: When stuck - MOST IMPORTANT (Primary - weight 3, used as tiebreaker)
+    21: {
         'questions_find': { DRIVER: 3 },
         'thought_partner': { COLLABORATOR: 3 },
         'tell_move': { SUPPORTER: 2 },
@@ -98,8 +98,8 @@ const answerMappings = {
         'cliff_tightens': { SUPPORTER: 1 }
     },
 
-    // Q11: Great conversation (Tertiary - weight 1)
-    11: {
+    // Q12: Great conversation (Tertiary - weight 1)
+    12: {
         'understand_new': { THINKER: 1 },
         'want_make': { CREATOR: 1 },
         'won_solved': { DRIVER: 1, CHALLENGER: 1, COLLABORATOR: 1 },
@@ -149,12 +149,12 @@ export function determinePersonalityType(answers) {
         }
     });
 
-    // If there's a tie, use Q20 as tiebreaker
-    if (winningTypes.length > 1 && answers[20]) {
-        const q20Mapping = answerMappings[20][answers[20]];
-        if (q20Mapping) {
+    // If there's a tie, use Q21 as tiebreaker
+    if (winningTypes.length > 1 && answers[21]) {
+        const q21Mapping = answerMappings[21][answers[21]];
+        if (q21Mapping) {
             for (const type of winningTypes) {
-                if (q20Mapping[type]) {
+                if (q21Mapping[type]) {
                     return type;
                 }
             }
