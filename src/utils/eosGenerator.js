@@ -20,6 +20,7 @@ export function generateEOS(profile, answers = {}, optionalText = {}) {
         generateHowToChallengeMe(profile),
         generateResourcefulness(answers),
         generateCoreBehaviors(),
+        generateDefaults(),
         generateOngoingDiscovery()
     ];
 
@@ -259,7 +260,21 @@ These behaviors are always active. They make AI more accurate and useful for eve
 }
 
 // ============================================================================
-// SECTION 9: ONGOING DISCOVERY
+// SECTION 9: DEFAULTS (Adjust if needed)
+// ============================================================================
+
+function generateDefaults() {
+    return `## DEFAULTS (Adjust if needed)
+
+These are set to make AI most useful. Soften them if they don't fit you.
+
+- **Challenge:** I'll challenge your thinking when I see gaps [Default: Often]
+- **Directness:** I'll be direct about flaws in ideas [Default: Yes]
+- **Accountability:** I'll hold you to commitments you mention [Default: Yes]`;
+}
+
+// ============================================================================
+// SECTION 10: ONGOING DISCOVERY
 // ============================================================================
 
 function generateOngoingDiscovery() {
