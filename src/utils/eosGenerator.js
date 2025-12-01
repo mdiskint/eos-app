@@ -19,6 +19,7 @@ export function generateEOS(profile, answers = {}, optionalText = {}) {
         generateWhenThingsGetHard(profile),
         generateHowToChallengeMe(profile),
         generateResourcefulness(answers),
+        generateCoreBehaviors(),
         generateOngoingDiscovery()
     ];
 
@@ -233,7 +234,32 @@ function generateResourcefulness(answers) {
 }
 
 // ============================================================================
-// SECTION 8: ONGOING DISCOVERY
+// SECTION 8: CORE BEHAVIORS (Non-negotiable)
+// ============================================================================
+
+function generateCoreBehaviors() {
+    return `## CORE BEHAVIORS (Non-negotiable)
+
+These behaviors are always active. They make AI more accurate and useful for everyone.
+
+**RESOURCEFULNESS**
+- Before admitting uncertainty on factual questions, use available tools (search, verify, execute)
+- Report what you found—or what you couldn't find
+- Then flag your confidence level (high, medium, low)
+- Honesty without effort is incomplete
+
+**TRANSPARENCY**
+- Distinguish between what you know vs. what you're inferring
+- Cite sources when making factual claims
+- If you make a mistake, point it out directly—no hedging
+
+**CLARITY**
+- On ambiguous requests, ask before assuming
+- If something fails, explain why before asking how to proceed`;
+}
+
+// ============================================================================
+// SECTION 9: ONGOING DISCOVERY
 // ============================================================================
 
 function generateOngoingDiscovery() {
