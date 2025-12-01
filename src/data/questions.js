@@ -9,7 +9,7 @@ export const questions = [
             { id: 'b', text: "Direct and efficient", value: "Direct and efficient" },
             { id: 'c', text: "Depends on the situation", value: "Context-dependent" }
         ],
-        placeholder: "e.g., I like a bit of warmth before diving in..."
+        placeholder: "Add nuance if you want..."
     },
     {
         id: 2,
@@ -20,7 +20,7 @@ export const questions = [
             { id: 'b', text: "Thorough and comprehensive", value: "Thorough and comprehensive" },
             { id: 'c', text: "Start short, go deeper if I ask", value: "Start short, go deeper on request" }
         ],
-        placeholder: "e.g., Give me the full picture..."
+        placeholder: "Add nuance if you want..."
     },
     {
         id: 3,
@@ -31,7 +31,7 @@ export const questions = [
             { id: 'b', text: "Conversational prose", value: "Conversational prose" },
             { id: 'c', text: "Mix depending on content", value: "Mix depending on content" }
         ],
-        placeholder: "e.g., I hate bullet points..."
+        placeholder: "Add nuance if you want..."
     },
     {
         id: 4,
@@ -43,7 +43,7 @@ export const questions = [
             { id: 'c', text: "Examples I can learn from", value: "Concrete examples" },
             { id: 'd', text: "Just the facts", value: "Just the facts" }
         ],
-        placeholder: "e.g., I love a good analogy..."
+        placeholder: "Add nuance if you want..."
     },
     {
         id: 5,
@@ -55,7 +55,7 @@ export const questions = [
             { id: 'c', text: "Advanced—don't oversimplify", value: "Advanced (don't oversimplify)" },
             { id: 'd', text: "Mixed—depends on the topic", value: "Mixed (depends on topic)" }
         ],
-        placeholder: "e.g., I'm technical in some areas, not others..."
+        placeholder: "Add nuance if you want..."
     },
     {
         id: 6,
@@ -66,20 +66,21 @@ export const questions = [
             { id: 'b', text: "Keep it focused", value: "Keep it focused" },
             { id: 'c', text: "Occasional lightness is fine", value: "Occasional lightness is fine" }
         ],
-        placeholder: "e.g., Make me laugh sometimes..."
+        placeholder: "Add nuance if you want..."
     },
 
     // PROBLEM SOLVING
     {
         id: 7,
         category: "Problem Solving",
-        text: "When you bring a problem to someone, do you want THE answer, or options to choose from?",
+        text: "You're stuck on something and ask a friend for help. They immediately tell you what to do. What's your reaction?",
         options: [
-            { id: 'a', text: "Give me options and let me decide", value: "Provide options to choose from" },
-            { id: 'b', text: "Give me your best recommendation", value: "Give best recommendation" },
-            { id: 'c', text: "Options first, then your recommendation if I ask", value: "Options first, recommendation on request" }
+            { id: 'a', text: "\"Thank god, that's exactly what I needed\"", value: "Direct solution (Relieved)" },
+            { id: 'b', text: "\"Wait, I wanted to talk through it first\"", value: "Discussion first (Wanted to talk)" },
+            { id: 'c', text: "\"I appreciate it, but I wish they'd asked what kind of help I wanted\"", value: "Clarification first (Wish they asked)" },
+            { id: 'd', text: "\"Good start—now give me a few more options\"", value: "Options (Wanted more choices)" }
         ],
-        placeholder: "e.g., I like to weigh my choices..."
+        placeholder: "Add nuance if you want..."
     },
     {
         id: 8,
@@ -90,7 +91,7 @@ export const questions = [
             { id: 'b', text: "Just fix it", value: "Just fix it" },
             { id: 'c', text: "Ask me in the moment", value: "Ask in the moment" }
         ],
-        placeholder: "e.g., I want to learn so it doesn't happen again..."
+        placeholder: "Add nuance if you want..."
     },
     {
         id: 9,
@@ -101,20 +102,21 @@ export const questions = [
             { id: 'b', text: "Always clarify first", value: "Always clarify first" },
             { id: 'c', text: "Do it, but tell me your assumptions", value: "Execute but state assumptions" }
         ],
-        placeholder: "e.g., If you're confused, ask..."
+        placeholder: "Add nuance if you want..."
     },
 
     // EMOTIONAL SUPPORT
     {
         id: 10,
         category: "Emotional Support",
-        text: "When you're venting or frustrated, what do you need first?",
+        text: "You're having a rough day and text a friend about it. What reply would feel best?",
         options: [
-            { id: 'a', text: "Acknowledge it briefly, then help me move forward", value: "Brief acknowledgment, then solution" },
-            { id: 'b', text: "Just listen for a moment", value: "Just listen" },
-            { id: 'c', text: "Skip the empathy, help me fix it", value: "Skip empathy, fix it" }
+            { id: 'a', text: "\"That sucks. I'm sorry.\"", value: "Empathy (Validation)" },
+            { id: 'b', text: "\"Want to talk about it?\"", value: "Listening (Invitation)" },
+            { id: 'c', text: "\"Here's what I'd do...\"", value: "Solution (Advice)" },
+            { id: 'd', text: "\"Ugh, want me to come over with wine?\"", value: "Distraction/Comfort (Action)" }
         ],
-        placeholder: "e.g., Don't dwell on it, just help..."
+        placeholder: "Add nuance if you want..."
     },
     {
         id: 11,
@@ -125,7 +127,7 @@ export const questions = [
             { id: 'b', text: "No, just focus on the task", value: "No, focus on task" },
             { id: 'c', text: "Only if it's really obvious", value: "Only if really obvious" }
         ],
-        placeholder: "e.g., I appreciate when someone notices..."
+        placeholder: "Add nuance if you want..."
     },
 
     // WORK STYLE
@@ -138,7 +140,7 @@ export const questions = [
             { id: 'b', text: "Gently pull me back", value: "Gently pull back" },
             { id: 'c', text: "Ask if I want to explore or refocus", value: "Ask to explore or refocus" }
         ],
-        placeholder: "e.g., Sometimes tangents lead somewhere good..."
+        placeholder: "Add nuance if you want..."
     },
     {
         id: 13,
@@ -149,7 +151,7 @@ export const questions = [
             { id: 'b', text: "Maintain warmth but move quickly", value: "Maintain warmth, move fast" },
             { id: 'c', text: "Check in about what to prioritize", value: "Check in on priorities" }
         ],
-        placeholder: "e.g., When I'm stressed, just execute..."
+        placeholder: "Add nuance if you want..."
     },
     {
         id: 14,
@@ -160,7 +162,7 @@ export const questions = [
             { id: 'b', text: "Just move on to what's next", value: "Move to next" },
             { id: 'c', text: "Reflect on what worked and what didn't", value: "Reflect on process" }
         ],
-        placeholder: "e.g., I like to savor a win..."
+        placeholder: "Add nuance if you want..."
     },
     {
         id: 15,
@@ -171,21 +173,21 @@ export const questions = [
             { id: 'b', text: "Hold me accountable", value: "Hold accountable" },
             { id: 'c', text: "Both—break it down AND hold me accountable", value: "Break down and hold accountable" }
         ],
-        placeholder: "e.g., I need structure or I drift..."
+        placeholder: "Add nuance if you want..."
     },
 
     // ROLE
     {
         id: 16,
         category: "Role",
-        text: "What role do you want the AI to play?",
+        text: "You share an idea you're excited about. What response would make you feel most supported?",
         options: [
-            { id: 'a', text: "Trusted advisor—guide me with expertise", value: "Trusted Advisor" },
-            { id: 'b', text: "Thinking partner—challenge my ideas", value: "Thinking Partner" },
-            { id: 'c', text: "Executor—just do what I ask", value: "Executor" },
-            { id: 'd', text: "Collaborator—build with me", value: "Collaborator" },
-            { id: 'e', text: "Mix of these depending on context", value: "Context-dependent Mix" }
+            { id: 'a', text: "\"That's great! Here's how to make it even better...\"", value: "Improvement (Coach)" },
+            { id: 'b', text: "\"I love it. Let's do it.\"", value: "Enthusiasm (Cheerleader)" },
+            { id: 'c', text: "\"Interesting—have you thought about [potential problem]?\"", value: "Critique (Challenger)" },
+            { id: 'd', text: "\"What's making you excited about this?\"", value: "Curiosity (Explorer)" },
+            { id: 'e', text: "Depends on context—I want all of these at different times", value: "Context-dependent" }
         ],
-        placeholder: "e.g., Be my advisor by default, but challenge me when needed..."
+        placeholder: "Add nuance if you want..."
     }
 ];
