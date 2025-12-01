@@ -32,16 +32,11 @@ const LandingPage = () => {
             {/* Header Bar */}
             <header className="bg-white/80 backdrop-blur-sm border-b border-secondary/20 sticky top-0 z-50">
                 <div className="container py-4">
-                    <div className="flex items-center gap-3">
-                        <img
-                            src="/eos-logo.png"
-                            alt="EOS"
-                            className="h-8 w-8"
-                        />
-                        <span className="text-sm font-medium text-primary tracking-wide">
-                            EMOTIONAL OPERATING SYSTEM
-                        </span>
-                    </div>
+                    <img
+                        src="/logo-banner.png"
+                        alt="EOS - Emotional Operating System"
+                        className="logo-banner"
+                    />
                 </div>
             </header>
 

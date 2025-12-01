@@ -207,6 +207,21 @@ h6 {
   border-color: var(--primary);
 }
 
+/* Logo Banner */
+.logo-banner {
+  display: block;
+  max-width: 500px;
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .logo-banner {
+    max-width: 90%;
+  }
+}
+
 /* Sections */
 .section {
   padding: 5rem 0;
