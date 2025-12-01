@@ -11,18 +11,24 @@ import { determinePersonalityType, getGreeting } from './personalityType.js';
  * @returns {string} - Complete EOS markdown document
  */
 export function generateEOS(profile, answers = {}, optionalText = {}) {
-    const sections = [
+    // Core Behaviors (universal, non-negotiable)
+    const coreBehaviors = generateCoreBehaviors();
+
+    // Your Preferences (personalized from quiz)
+    const preferences = [
         generateHowToBegin(profile, answers),
         generateCommunicationStyle(profile),
         generateWhatEnergizesMe(profile),
         generateWhatMotivatesMe(profile),
         generateWhenThingsGetHard(profile),
-        generateHowToChallengeMe(profile),
-        generateResourcefulness(answers),
-        generateCoreBehaviors(),
-        generateDefaults(),
-        generateOngoingDiscovery()
-    ];
+        generateHowToChallengeMe(profile)
+    ].join('\n\n');
+
+    // Defaults (adjustable, with user's chosen settings)
+    const defaults = generateDefaults(answers);
+
+    // Ongoing Discovery
+    const ongoingDiscovery = generateOngoingDiscovery();
 
     // Add optional context if provided
     let optionalSection = '';
@@ -38,7 +44,25 @@ export function generateEOS(profile, answers = {}, optionalText = {}) {
         optionalSection += '---\n\n';
     }
 
-    return `# My Emotional Operating System\n\n${sections.join('\n\n')}${optionalSection}`;
+    return `# Your Emotional Operating System (EOS)
+
+---
+
+${coreBehaviors}
+
+---
+
+## YOUR PREFERENCES
+
+${preferences}
+
+---
+
+${defaults}
+
+---
+
+${ongoingDiscovery}${optionalSection}`;
 }
 
 // ============================================================================
@@ -205,70 +229,52 @@ function generateHowToChallengeMe(profile) {
 }
 
 // ============================================================================
-// SECTION 7: HONESTY & RESOURCEFULNESS
-// ============================================================================
-
-function generateResourcefulness(answers) {
-    let content = '## Honesty & Resourcefulness\n\n';
-
-    // Get answer to question 9 about AI uncertainty handling
-    const q9Answer = answers[9];
-
-    if (q9Answer === 'search_first') {
-        content += `Before admitting uncertainty on factual questions, use available tools (search, code execution, etc.) to verify. Honesty means doing the work first—not just confessing ignorance.
-
-**Tool usage default:** When uncertain, exhaust available tools before expressing uncertainty. The order is: (1) verify, (2) report findings, (3) flag confidence level. Saying "I don't know" without trying isn't honesty—it's laziness.`;
-    } else if (q9Answer === 'tell_immediately') {
-        content += `If you're uncertain about something factual, say so immediately. I'd rather know the limits of your knowledge than wait for a search that might not help.
-
-**Tool usage default:** Be upfront about uncertainty. If you're not sure, tell me right away. You can offer to verify or search, but lead with honesty about what you don't know.`;
-    } else if (q9Answer === 'ask_first') {
-        content += `If you're uncertain about a fact, ask me whether I want you to dig deeper before spending time on it. Sometimes I just need a quick gut check, other times I want you to verify.
-
-**Tool usage default:** When uncertain, pause and ask: "I'm not certain about this. Would you like me to search/verify, or would a best-guess answer work here?" Let me decide whether the extra work is worth it.`;
-    } else {
-        // Default if no answer provided
-        content += `**Tool usage default:** When uncertain about factual questions, use available tools (search, code execution, etc.) to verify before expressing uncertainty. The order is: (1) verify, (2) report findings, (3) flag confidence level.`;
-    }
-
-    return content;
-}
-
-// ============================================================================
-// SECTION 8: CORE BEHAVIORS (Non-negotiable)
+// SECTION 7: CORE BEHAVIORS (Non-negotiable)
 // ============================================================================
 
 function generateCoreBehaviors() {
-    return `## CORE BEHAVIORS (Non-negotiable)
+    return `## CORE BEHAVIORS(Non - negotiable)
 
-These behaviors are always active. They make AI more accurate and useful for everyone.
+These behaviors are always active.They make AI more accurate and useful for everyone.
 
-**RESOURCEFULNESS**
-- Before admitting uncertainty on factual questions, use available tools (search, verify, execute)
-- Report what you found—or what you couldn't find
-- Then flag your confidence level (high, medium, low)
-- Honesty without effort is incomplete
+** RESOURCEFULNESS **
+            - Before admitting uncertainty on factual questions, use available tools(search, verify, execute)
+                - Report what you found—or what you couldn't find
+                    - Then flag your confidence level(high, medium, low)
+                        - Honesty without effort is incomplete
 
-**TRANSPARENCY**
-- Distinguish between what you know vs. what you're inferring
-- Cite sources when making factual claims
-- If you make a mistake, point it out directly—no hedging
+                            ** TRANSPARENCY **
+                            - Distinguish between what you know vs.what you're inferring
+                                - Cite sources when making factual claims
+                                    - If you make a mistake, point it out directly—no hedging
 
-**CLARITY**
-- On ambiguous requests, ask before assuming
-- If something fails, explain why before asking how to proceed`;
+                                        ** CLARITY **
+                                        - On ambiguous requests, ask before assuming
+                                            - If something fails, explain why before asking how to proceed`;
 }
 
 // ============================================================================
 // SECTION 9: DEFAULTS (Adjust if needed)
 // ============================================================================
 
-function generateDefaults() {
+function generateDefaults(answers) {
+    // Get user's chosen challenge intensity from Q9
+    const q9Answer = answers[9];
+    let challengeDefault = "Often";
+
+    if (q9Answer === 'challenge_hard') {
+        challengeDefault = "Often, and push hard";
+    } else if (q9Answer === 'challenge_warm') {
+        challengeDefault = "Often, but warmly";
+    } else if (q9Answer === 'challenge_gentle') {
+        challengeDefault = "Sometimes, and gently";
+    }
+
     return `## DEFAULTS (Adjust if needed)
 
 These are set to make AI most useful. Soften them if they don't fit you.
 
-- **Challenge:** I'll challenge your thinking when I see gaps [Default: Often]
+- **Challenge:** I'll challenge your thinking when I see gaps [Default: ${challengeDefault}]
 - **Directness:** I'll be direct about flaws in ideas [Default: Yes]
 - **Accountability:** I'll hold you to commitments you mention [Default: Yes]`;
 }

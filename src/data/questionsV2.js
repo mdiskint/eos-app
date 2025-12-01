@@ -256,29 +256,29 @@ export const questionsV2 = [
     },
     {
         id: 9,
-        text: "When you ask a factual question and the AI isn't sure, should it...",
+        text: "When I spot a gap in your reasoning, I'll point it out. How much friction do you want?",
         options: [
             {
                 id: 'a',
-                text: "Tell me right away it doesn't know",
-                value: "tell_immediately",
-                substrates: { agencyOrientation: 'driver' }
+                text: "Push hard—I can take it",
+                value: "challenge_hard",
+                substrates: { selfConcept: 'secure', threat: 'fight' }
             },
             {
                 id: 'b',
-                text: "Try to find the answer first (search, verify), then tell me what it found",
-                value: "search_first",
+                text: "Push, but be warm about it",
+                value: "challenge_warm",
                 substrates: { agencyOrientation: 'collaborator' }
             },
             {
                 id: 'c',
-                text: "Ask me if I want it to dig deeper before spending time on it",
-                value: "ask_first",
-                substrates: { agencyOrientation: 'passenger' }
+                text: "Go easy—I'm sensitive to criticism",
+                value: "challenge_gentle",
+                substrates: { selfConcept: 'shame', threat: 'freeze' }
             }
         ],
         allowText: true,
-        placeholder: "e.g., I'd rather it search first and come back with something useful than just shrug..."
+        placeholder: "e.g., I need directness, but tone matters more than I'd like to admit..."
     },
     {
         id: 10,
