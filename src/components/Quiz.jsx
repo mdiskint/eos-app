@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { questions } from '../data/questions';
+import { questionsV2 as questions } from '../data/questionsV2';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import MilestoneOverlay from './MilestoneOverlay';
