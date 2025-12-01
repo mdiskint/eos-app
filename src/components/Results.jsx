@@ -28,7 +28,7 @@ const Results = () => {
         setSubstrateProfile(profile);
 
         // Generate EOS from substrate profile
-        const generatedText = generateEOS(profile, optionalText);
+        const generatedText = generateEOS(profile, answers, optionalText);
         setEosText(generatedText);
 
         // Save to Airtable with substrate data
@@ -47,15 +47,10 @@ const Results = () => {
         <div className="min-h-screen">
             {/* Header Bar */}
             <header className="bg-white/80 backdrop-blur-sm border-b border-secondary/20 sticky top-0 z-50">
-                <div className="container py-3">
-                    <div className="flex items-center gap-3">
-                        <img
-                            src="/eos-logo.png"
-                            alt="EOS"
-                            className="h-7 w-7"
-                        />
-                        <span className="text-xs font-medium text-primary tracking-wide">
-                            EMOTIONAL OPERATING SYSTEM
+                <div className="container py-4">
+                    <div className="text-center">
+                        <span className="text-sm font-medium text-primary tracking-wide">
+                            EOS — EMOTIONAL OPERATING SYSTEM
                         </span>
                     </div>
                 </div>

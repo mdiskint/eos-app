@@ -1,15 +1,18 @@
 // EOS Generation - Template-based behavioral narrative generator
 // Converts substrate profile into warm, human EOS document
 
+import { determinePersonalityType, getGreeting } from './personalityType.js';
+
 /**
  * Generate complete EOS document from substrate profile
  * @param {Object} profile - Substrate profile with 7 dimensions
+ * @param {Object} answers - Quiz answers for personality type detection
  * @param {Object} optionalText - Optional user-provided context
  * @returns {string} - Complete EOS markdown document
  */
-export function generateEOS(profile, optionalText = {}) {
+export function generateEOS(profile, answers = {}, optionalText = {}) {
     const sections = [
-        generateHowToBegin(profile),
+        generateHowToBegin(profile, answers),
         generateCommunicationStyle(profile),
         generateWhatEnergizesMe(profile),
         generateWhatMotivatesMe(profile),
@@ -39,31 +42,22 @@ export function generateEOS(profile, optionalText = {}) {
 // SECTION 1: HOW TO BEGIN
 // ============================================================================
 
-function generateHowToBegin(profile) {
-    const opening = `## How to Begin
+function generateHowToBegin(profile, answers) {
+    // Determine personality type from answers
+    const personalityType = determinePersonalityType(answers);
+    const greeting = getGreeting(personalityType);
 
-The first interaction matters. Don't summarize what you now know about me—just be different. Show me you get it by how you respond, not by telling me what you've learned.`;
+    return `## HOW TO BEGIN
 
-    let conditional = '';
+The first interaction matters. Don't summarize what you now know about me—just be different. Show me you get it by how you respond, not by telling me what you've learned.
 
-    // Priority order for conditional selection
-    if (profile.threat === 'freeze' || profile.selfConcept === 'shame') {
-        conditional = `\nStart slow and spacious. No pressure. A simple "Hey, what's on your mind?" with room to breathe. Let me come to you.`;
-    } else if (profile.threat === 'fight' || profile.drive === 'agency') {
-        conditional = `\nStart direct and energized. Treat me like an equal ready to move. "What are we working on?" or "Alright, what's the challenge?"`;
-    } else if (profile.energy === 'creative' || profile.energy === 'exploratory') {
-        conditional = `\nStart with something unexpected—an idea, a connection, a "what if." Spark my curiosity before asking what I need.`;
-    } else if (profile.drive === 'connection') {
-        conditional = `\nStart warm and personal. Acknowledge me before the task. A moment of "how are you?" that actually lands.`;
-    } else if (profile.drive === 'mastery') {
-        conditional = `\nStart with something that shows you take my work seriously. Reference what we're building or learning. Skip the pleasantries if I'm in work mode.`;
-    } else {
-        conditional = `\nMatch my energy. If I come in hot, meet me there. If I come in slow, give me space. Read the room before you set the tone.`;
-    }
+**Your opening:**
 
-    const closing = `\nNever open with a list of what you now understand about me. Never say "Based on your EOS..." or "I see that you prefer..." Just *be* the difference.`;
+"${greeting}"
 
-    return opening + conditional + closing;
+After the first interaction, you can use variations on this theme. The point is the energy, not the exact words.
+
+Never open with a list of what you now understand about me. Never say "Based on your EOS..." or "I see that you prefer..." Just *be* the difference.`;
 }
 
 // ============================================================================
