@@ -86,109 +86,118 @@ const Quiz = () => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center p-4 py-12">
-            <AnimatePresence>
-                {activeMilestone && (
-                    <MilestoneOverlay
-                        milestone={activeMilestone}
-                        onComplete={handleMilestoneComplete}
-                    />
-                )}
-            </AnimatePresence>
-
-            <div className="quiz-container">
-                {/* Logo Header */}
-                <div className="flex justify-center mb-6">
-                    <img
-                        src="/eos-logo.png"
-                        alt="EOS"
-                        className="h-9 w-auto opacity-80"
-                    />
-                </div>
-
-                {/* Progress Section */}
-                <div className="quiz-progress">
-                    <div className="progress-label">
-                        Question {currentQuestion + 1} of {questions.length}
-                    </div>
-                    <div className="progress-bar-container">
-                        <motion.div
-                            className="progress-bar-fill"
-                            initial={{ width: 0 }}
-                            animate={{ width: `${progress}%` }}
-                            transition={{ duration: 0.4, ease: "easeOut" }}
+        <div className="min-h-screen">
+            {/* Header Bar */}
+            <header className="bg-white/80 backdrop-blur-sm border-b border-secondary/20 sticky top-0 z-50">
+                <div className="container py-3">
+                    <div className="flex items-center gap-3">
+                        <img
+                            src="/eos-logo.png"
+                            alt="EOS"
+                            className="h-7 w-7"
                         />
+                        <span className="text-xs font-medium text-primary tracking-wide">
+                            EMOTIONAL OPERATING SYSTEM
+                        </span>
                     </div>
                 </div>
+            </header>
 
-                {/* Question and Options */}
-                <AnimatePresence mode="wait">
-                    <motion.div
-                        key={currentQuestion}
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -20 }}
-                        transition={{ duration: 0.3 }}
-                        className="quiz-content"
-                    >
-                        <h2 className="quiz-question">
-                            {question.text}
-                        </h2>
-
-                        <div className="quiz-options">
-                            {question.options.map((option) => {
-                                const isSelected = answers[question.id] === option.value;
-                                return (
-                                    <button
-                                        key={option.id}
-                                        onClick={() => handleOptionSelect(option.value)}
-                                        className={`quiz-option ${isSelected ? 'quiz-option-selected' : ''}`}
-                                    >
-                                        <span className="quiz-option-text">
-                                            {option.text}
-                                        </span>
-                                    </button>
-                                );
-                            })}
-                        </div>
-
-                        {/* Optional Text Field */}
-                        <div className={`quiz-optional-field ${justSelected ? 'quiz-optional-field-highlight' : ''}`}>
-                            <label htmlFor={`optional-${question.id}`} className="quiz-optional-label">
-                                Want to add more detail? (optional)
-                            </label>
-                            <textarea
-                                ref={textareaRef}
-                                id={`optional-${question.id}`}
-                                className="quiz-optional-textarea"
-                                placeholder="Add any specifics or nuances here..."
-                                value={optionalText[question.id] || ''}
-                                onChange={handleOptionalTextChange}
-                                rows={3}
-                            />
-                        </div>
-                    </motion.div>
+            <div className="flex items-center justify-center p-4 py-12">
+                <AnimatePresence>
+                    {activeMilestone && (
+                        <MilestoneOverlay
+                            milestone={activeMilestone}
+                            onComplete={handleMilestoneComplete}
+                        />
+                    )}
                 </AnimatePresence>
 
-                {/* Navigation */}
-                <div className="quiz-navigation">
-                    <button
-                        onClick={handleBack}
-                        disabled={currentQuestion === 0}
-                        className={`quiz-nav-button quiz-nav-back ${currentQuestion === 0 ? 'quiz-nav-disabled' : ''}`}
-                    >
-                        <ChevronLeft size={20} />
-                        <span>Back</span>
-                    </button>
+                <div className="quiz-container">
+                    {/* Progress Section */}
+                    <div className="quiz-progress">
+                        <div className="progress-label">
+                            Question {currentQuestion + 1} of {questions.length}
+                        </div>
+                        <div className="progress-bar-container">
+                            <motion.div
+                                className="progress-bar-fill"
+                                initial={{ width: 0 }}
+                                animate={{ width: `${progress}%` }}
+                                transition={{ duration: 0.4, ease: "easeOut" }}
+                            />
+                        </div>
+                    </div>
 
-                    <button
-                        onClick={handleNext}
-                        disabled={!hasAnswered}
-                        className={`quiz-nav-button quiz-nav-next ${!hasAnswered ? 'quiz-nav-disabled' : ''}`}
-                    >
-                        <span>{isLastQuestion ? 'Generate My EOS' : 'Next'}</span>
-                        <ChevronRight size={20} />
-                    </button>
+                    {/* Question and Options */}
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key={currentQuestion}
+                            initial={{ opacity: 0, x: 20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={{ opacity: 0, x: -20 }}
+                            transition={{ duration: 0.3 }}
+                            className="quiz-content"
+                        >
+                            <h2 className="quiz-question">
+                                {question.text}
+                            </h2>
+
+                            <div className="quiz-options">
+                                {question.options.map((option) => {
+                                    const isSelected = answers[question.id] === option.value;
+                                    return (
+                                        <button
+                                            key={option.id}
+                                            onClick={() => handleOptionSelect(option.value)}
+                                            className={`quiz-option ${isSelected ? 'quiz-option-selected' : ''}`}
+                                        >
+                                            <span className="quiz-option-text">
+                                                {option.text}
+                                            </span>
+                                        </button>
+                                    );
+                                })}
+                            </div>
+
+                            {/* Optional Text Field */}
+                            <div className={`quiz-optional-field ${justSelected ? 'quiz-optional-field-highlight' : ''}`}>
+                                <label htmlFor={`optional-${question.id}`} className="quiz-optional-label">
+                                    Want to add more detail? (optional)
+                                </label>
+                                <textarea
+                                    ref={textareaRef}
+                                    id={`optional-${question.id}`}
+                                    className="quiz-optional-textarea"
+                                    placeholder="Add any specifics or nuances here..."
+                                    value={optionalText[question.id] || ''}
+                                    onChange={handleOptionalTextChange}
+                                    rows={3}
+                                />
+                            </div>
+                        </motion.div>
+                    </AnimatePresence>
+
+                    {/* Navigation */}
+                    <div className="quiz-navigation">
+                        <button
+                            onClick={handleBack}
+                            disabled={currentQuestion === 0}
+                            className={`quiz-nav-button quiz-nav-back ${currentQuestion === 0 ? 'quiz-nav-disabled' : ''}`}
+                        >
+                            <ChevronLeft size={20} />
+                            <span>Back</span>
+                        </button>
+
+                        <button
+                            onClick={handleNext}
+                            disabled={!hasAnswered}
+                            className={`quiz-nav-button quiz-nav-next ${!hasAnswered ? 'quiz-nav-disabled' : ''}`}
+                        >
+                            <span>{isLastQuestion ? 'Generate My EOS' : 'Next'}</span>
+                            <ChevronRight size={20} />
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

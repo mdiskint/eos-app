@@ -29,6 +29,22 @@ const LandingPage = () => {
 
     return (
         <div className="min-h-screen">
+            {/* Header Bar */}
+            <header className="bg-white/80 backdrop-blur-sm border-b border-secondary/20 sticky top-0 z-50">
+                <div className="container py-4">
+                    <div className="flex items-center gap-3">
+                        <img
+                            src="/eos-logo.png"
+                            alt="EOS"
+                            className="h-8 w-8"
+                        />
+                        <span className="text-sm font-medium text-primary tracking-wide">
+                            EMOTIONAL OPERATING SYSTEM
+                        </span>
+                    </div>
+                </div>
+            </header>
+
             {/* Hero Section */}
             <div className="section section-hero">
                 <div className="container">
@@ -38,18 +54,6 @@ const LandingPage = () => {
                         transition={{ duration: 0.8 }}
                         className="text-center"
                     >
-                        {/* Brand Header */}
-                        <div className="mb-8 flex justify-center">
-                            <img
-                                src="/eos-logo.png"
-                                alt="EOS - Emotional Operating System"
-                                className="h-14 w-auto"
-                            />
-                        </div>
-                        <p className="text-sm text-muted uppercase tracking-wider mb-4">
-                            Emotional Operating System
-                        </p>
-
                         {/* Main Headline */}
                         <h1 className="hero-title">
                             Your AI Has No Idea<br />Who You Are
