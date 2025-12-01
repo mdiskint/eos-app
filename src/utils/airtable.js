@@ -27,7 +27,7 @@ export const createQuizSession = async (email) => {
     }
 };
 
-export const completeQuizSession = async (recordId, answers, eosResult, optionalText = {}, sliders = {}) => {
+export const completeQuizSession = async (recordId, answers, eosResult, optionalText = {}, sliders = {}, finalText = "") => {
     if (!recordId) return;
 
     try {
@@ -37,9 +37,15 @@ export const completeQuizSession = async (recordId, answers, eosResult, optional
             calibration: sliders
         };
 
+        // Merge final text into optional details
+        const fullOptionalText = {
+            ...optionalText,
+            final_context: finalText
+        };
+
         const fields = {
             "Answers": JSON.stringify(fullAnswers),
-            "Optional Details": JSON.stringify(optionalText),
+            "Optional Details": JSON.stringify(fullOptionalText),
             "EOS Result": eosResult,
             "Status": "Completed",
             "Completed At": new Date().toISOString()

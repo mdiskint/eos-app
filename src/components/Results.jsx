@@ -14,6 +14,7 @@ const Results = () => {
         const answers = JSON.parse(localStorage.getItem('eos_answers') || '{}');
         const optionalText = JSON.parse(localStorage.getItem('eos_optional_text') || '{}');
         const sliders = JSON.parse(localStorage.getItem('eos_sliders') || '{"challengeIntensity": 70, "directness": 70}');
+        const finalText = localStorage.getItem('eos_final_text') || '';
         const recordId = localStorage.getItem('eos_record_id');
 
         if (Object.keys(answers).length === 0) {
@@ -22,12 +23,12 @@ const Results = () => {
         }
 
         // Generate EOS
-        const generatedText = generateEOS(answers, sliders, optionalText);
+        const generatedText = generateEOS(answers, sliders, optionalText, finalText);
         setEosText(generatedText);
 
         // Save to Airtable
         if (recordId) {
-            completeQuizSession(recordId, answers, generatedText, optionalText, sliders);
+            completeQuizSession(recordId, answers, generatedText, optionalText, sliders, finalText);
         }
     }, [navigate]);
 

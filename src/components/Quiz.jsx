@@ -9,18 +9,28 @@ const Quiz = () => {
     const [answers, setAnswers] = useState({});
     const [optionalText, setOptionalText] = useState({});
     const [justSelected, setJustSelected] = useState(false);
-    const [calibrationMode, setCalibrationMode] = useState(false);
+    const [step, setStep] = useState('quiz'); // 'quiz', 'calibration', 'final'
     const [sliders, setSliders] = useState({
         challengeIntensity: 70,
         directness: 70
     });
+    const [finalText, setFinalText] = useState('');
 
     const navigate = useNavigate();
     const textareaRef = useRef(null);
 
     const question = questions[currentQuestion];
     const progress = ((currentQuestion + 1) / questions.length) * 100;
-    const hasAnswered = !!answers[question?.id];
+
+    // Helper to check if current question has an answer
+    const hasAnswered = () => {
+        const ans = answers[question?.id];
+        if (question?.multiSelect) {
+            return ans && ans.length > 0;
+        }
+        return !!ans;
+    };
+
     const isLastQuestion = currentQuestion === questions.length - 1;
 
     // Reset animation state when question changes
@@ -29,12 +39,21 @@ const Quiz = () => {
     }, [currentQuestion]);
 
     const handleOptionSelect = (value) => {
-        const newAnswers = { ...answers, [question.id]: value };
-        setAnswers(newAnswers);
-
-        // Trigger animation on optional field
-        setJustSelected(true);
-        setTimeout(() => setJustSelected(false), 2000);
+        if (question.multiSelect) {
+            const current = answers[question.id] || [];
+            let newValues;
+            if (current.includes(value)) {
+                newValues = current.filter(v => v !== value);
+            } else {
+                newValues = [...current, value];
+            }
+            setAnswers({ ...answers, [question.id]: newValues });
+        } else {
+            setAnswers({ ...answers, [question.id]: value });
+            // Trigger animation on optional field only for single select
+            setJustSelected(true);
+            setTimeout(() => setJustSelected(false), 2000);
+        }
     };
 
     const handleOptionalTextChange = (e) => {
@@ -52,17 +71,18 @@ const Quiz = () => {
     };
 
     const handleNext = () => {
-        if (calibrationMode) {
+        if (step === 'quiz') {
+            if (!hasAnswered()) return;
+
+            if (isLastQuestion) {
+                setStep('calibration');
+            } else {
+                setCurrentQuestion(curr => curr + 1);
+            }
+        } else if (step === 'calibration') {
+            setStep('final');
+        } else if (step === 'final') {
             finishQuiz();
-            return;
-        }
-
-        if (!hasAnswered) return;
-
-        if (isLastQuestion) {
-            setCalibrationMode(true);
-        } else {
-            setCurrentQuestion(curr => curr + 1);
         }
     };
 
@@ -70,12 +90,15 @@ const Quiz = () => {
         localStorage.setItem('eos_answers', JSON.stringify(answers));
         localStorage.setItem('eos_optional_text', JSON.stringify(optionalText));
         localStorage.setItem('eos_sliders', JSON.stringify(sliders));
+        localStorage.setItem('eos_final_text', finalText);
         navigate('/results');
     };
 
     const handleBack = () => {
-        if (calibrationMode) {
-            setCalibrationMode(false);
+        if (step === 'final') {
+            setStep('calibration');
+        } else if (step === 'calibration') {
+            setStep('quiz');
         } else if (currentQuestion > 0) {
             setCurrentQuestion(curr => curr - 1);
         }
@@ -110,7 +133,7 @@ const Quiz = () => {
 
             <div className="flex items-center justify-center p-4 py-12">
                 <div className="quiz-container">
-                    {!calibrationMode ? (
+                    {step === 'quiz' && (
                         <>
                             {/* Progress Section */}
                             <div className="quiz-progress">
@@ -143,10 +166,19 @@ const Quiz = () => {
                                     <h2 className="quiz-question">
                                         {question.text}
                                     </h2>
+                                    {question.instruction && (
+                                        <p className="text-sm text-secondary/60 mb-4 italic">
+                                            {question.instruction}
+                                        </p>
+                                    )}
 
                                     <div className="quiz-options">
                                         {question.options.map((option) => {
-                                            const isSelected = answers[question.id] === option.value;
+                                            const currentAns = answers[question.id];
+                                            const isSelected = question.multiSelect
+                                                ? currentAns?.includes(option.value)
+                                                : currentAns === option.value;
+
                                             return (
                                                 <button
                                                     key={option.id}
@@ -179,7 +211,9 @@ const Quiz = () => {
                                 </motion.div>
                             </AnimatePresence>
                         </>
-                    ) : (
+                    )}
+
+                    {step === 'calibration' && (
                         /* Calibration Screen */
                         <motion.div
                             initial={{ opacity: 0, scale: 0.95 }}
@@ -188,7 +222,7 @@ const Quiz = () => {
                             className="quiz-content space-y-8"
                         >
                             <div className="text-center space-y-4">
-                                <h2 className="text-2xl font-bold text-primary">One last thing: Calibrate your feedback</h2>
+                                <h2 className="text-2xl font-bold text-primary">Almost done: Calibrate your feedback</h2>
                                 <p className="text-secondary/80">
                                     By default, I'll challenge your thinking and be direct about flaws. How much friction works for you?
                                 </p>
@@ -246,12 +280,38 @@ const Quiz = () => {
                         </motion.div>
                     )}
 
+                    {step === 'final' && (
+                        /* Final Step Screen */
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.4 }}
+                            className="quiz-content space-y-8"
+                        >
+                            <div className="text-center space-y-4">
+                                <h2 className="text-2xl font-bold text-primary">Anything else?</h2>
+                                <p className="text-secondary/80">
+                                    Anything we missed? Special circumstances, work context, or preferences that didn't fit the questions?
+                                </p>
+                            </div>
+
+                            <div className="p-1">
+                                <textarea
+                                    className="w-full p-4 rounded-xl border border-secondary/20 focus:border-accent focus:ring-1 focus:ring-accent outline-none min-h-[200px] text-base resize-none bg-surface"
+                                    placeholder="Optional—skip if we covered everything"
+                                    value={finalText}
+                                    onChange={(e) => setFinalText(e.target.value)}
+                                />
+                            </div>
+                        </motion.div>
+                    )}
+
                     {/* Navigation */}
                     <div className="quiz-navigation mt-8">
                         <button
                             onClick={handleBack}
-                            disabled={!calibrationMode && currentQuestion === 0}
-                            className={`quiz-nav-button quiz-nav-back ${(!calibrationMode && currentQuestion === 0) ? 'quiz-nav-disabled' : ''}`}
+                            disabled={step === 'quiz' && currentQuestion === 0}
+                            className={`quiz-nav-button quiz-nav-back ${(step === 'quiz' && currentQuestion === 0) ? 'quiz-nav-disabled' : ''}`}
                         >
                             <ChevronLeft size={20} />
                             <span>Back</span>
@@ -259,10 +319,14 @@ const Quiz = () => {
 
                         <button
                             onClick={handleNext}
-                            disabled={!calibrationMode && !hasAnswered}
-                            className={`quiz-nav-button quiz-nav-next ${(!calibrationMode && !hasAnswered) ? 'quiz-nav-disabled' : ''}`}
+                            disabled={step === 'quiz' && !hasAnswered()}
+                            className={`quiz-nav-button quiz-nav-next ${(step === 'quiz' && !hasAnswered()) ? 'quiz-nav-disabled' : ''}`}
                         >
-                            <span>{calibrationMode ? 'Generate My EOS' : (isLastQuestion ? 'Next: Calibration' : 'Next')}</span>
+                            <span>
+                                {step === 'final' ? 'Generate My EOS' :
+                                    step === 'calibration' ? 'Next: Final Step' :
+                                        (step === 'quiz' && isLastQuestion) ? 'Next: Calibration' : 'Next'}
+                            </span>
                             <ChevronRight size={20} />
                         </button>
                     </div>
