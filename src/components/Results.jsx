@@ -3,19 +3,17 @@ import { useNavigate } from 'react-router-dom';
 import { completeQuizSession } from '../utils/airtable';
 import { Copy, Check, RefreshCw } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { questionsV2 } from '../data/questionsV2';
-import { inferSubstrates, getSubstrateSummary } from '../utils/substrateInference';
 import { generateEOS } from '../utils/eosGenerator';
 
 const Results = () => {
     const [eosText, setEosText] = useState('');
-    const [substrateProfile, setSubstrateProfile] = useState(null);
     const [copied, setCopied] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
         const answers = JSON.parse(localStorage.getItem('eos_answers') || '{}');
         const optionalText = JSON.parse(localStorage.getItem('eos_optional_text') || '{}');
+        const sliders = JSON.parse(localStorage.getItem('eos_sliders') || '{"challengeIntensity": 70, "directness": 70}');
         const recordId = localStorage.getItem('eos_record_id');
 
         if (Object.keys(answers).length === 0) {
@@ -23,17 +21,13 @@ const Results = () => {
             return;
         }
 
-        // Infer substrate profile from answers
-        const profile = inferSubstrates(answers, questionsV2);
-        setSubstrateProfile(profile);
-
-        // Generate EOS from substrate profile
-        const generatedText = generateEOS(profile, answers, optionalText);
+        // Generate EOS
+        const generatedText = generateEOS(answers, sliders, optionalText);
         setEosText(generatedText);
 
-        // Save to Airtable with substrate data
+        // Save to Airtable
         if (recordId) {
-            completeQuizSession(recordId, answers, generatedText, optionalText, profile);
+            completeQuizSession(recordId, answers, generatedText, optionalText, sliders);
         }
     }, [navigate]);
 

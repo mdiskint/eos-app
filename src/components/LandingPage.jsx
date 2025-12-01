@@ -143,7 +143,7 @@ const LandingPage = () => {
                     <h2 className="section-title text-center">How It Works</h2>
                     <div className="step-grid">
                         {[
-                            { step: "1", title: "Answer Questions", desc: "20 quick questions about how you prefer to work" },
+                            { step: "1", title: "Answer Questions", desc: "16 quick questions about how you prefer to work" },
                             { step: "2", title: "Generate EOS", desc: "We generate your personalized EOS document" },
                             { step: "3", title: "Copy & Paste", desc: "Copy it into any AI's custom instructions" },
                             { step: "4", title: "Experience Magic", desc: "Experience AI that finally feels like it understands you" }

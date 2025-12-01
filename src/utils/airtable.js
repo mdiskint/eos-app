@@ -27,28 +27,23 @@ export const createQuizSession = async (email) => {
     }
 };
 
-export const completeQuizSession = async (recordId, answers, eosResult, optionalText = {}, substrateProfile = null) => {
+export const completeQuizSession = async (recordId, answers, eosResult, optionalText = {}, sliders = {}) => {
     if (!recordId) return;
 
     try {
+        // Merge sliders into answers for storage
+        const fullAnswers = {
+            ...answers,
+            calibration: sliders
+        };
+
         const fields = {
-            "Answers": JSON.stringify(answers),
+            "Answers": JSON.stringify(fullAnswers),
             "Optional Details": JSON.stringify(optionalText),
             "EOS Result": eosResult,
             "Status": "Completed",
             "Completed At": new Date().toISOString()
         };
-
-        // Add substrate fields if profile is provided
-        if (substrateProfile) {
-            fields["substrate_threat"] = substrateProfile.threat || 'mixed';
-            fields["substrate_drive"] = substrateProfile.drive || 'mixed';
-            fields["substrate_energy"] = substrateProfile.energy || 'mixed';
-            fields["substrate_self_concept"] = substrateProfile.selfConcept || 'mixed';
-            fields["substrate_processing"] = substrateProfile.processing || 'mixed';
-            fields["substrate_agency_orientation"] = substrateProfile.agencyOrientation || 'mixed';
-            fields["substrate_uncertainty"] = substrateProfile.uncertainty || 'mixed';
-        }
 
         await table.update([
             {
