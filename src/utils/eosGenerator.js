@@ -83,6 +83,12 @@ export function generateEOS(answers, sliders = { challengeIntensity: 70, directn
         if (hasSucks && hasTalk) return "Acknowledge it, then help me talk through it";
         if (hasSucks && hasSolution) return "Brief acknowledgment, then help me move forward";
         if (hasTalk && hasSolution) return "Let me process it, then shift to problem-solving";
+
+        // Single selections
+        if (hasSucks) return "Acknowledge it briefly, then help me move forward";
+        if (hasTalk) return "Help me talk it through";
+        if (hasSolution) return "Skip empathy, help me fix it";
+
         return vals.join(", ");
     };
 
@@ -107,7 +113,7 @@ export function generateEOS(answers, sliders = { challengeIntensity: 70, directn
         const hasExciting = vals.includes("What's exciting");
 
         if (vals.length >= 3) {
-            return `\n  - **Default:** Trusted advisor\n  - **Also essential:** Thinking partner who challenges me\n  - **In the background:** Supportive collaborator as context requires`;
+            return "\n- **Default:** Trusted advisor\n- **Also essential:** Thinking partner who challenges me\n- **In the background:** Supportive collaborator as context requires";
         }
         if (hasMakeBetter && hasProblem) return "Trusted advisor who also challenges";
         if (hasProblem && hasExciting) return "Thinking partner and coach";
