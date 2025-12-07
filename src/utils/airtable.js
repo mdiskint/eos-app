@@ -43,12 +43,33 @@ export const completeQuizSession = async (recordId, answers, eosResult, optional
             final_context: finalText
         };
 
+        // Extract Memory answers
+        const memoryFields = {};
+        const memoryIds = ['m1', 'm2', 'm3', 'm4', 'm5'];
+
+        memoryIds.forEach(id => {
+            if (answers[id]) {
+                // Map ID to Field Name
+                const fieldMap = {
+                    'm1': "Memory Q1",
+                    'm2': "Memory Q2",
+                    'm3': "Memory Q3",
+                    'm4': "Memory Q4",
+                    'm5': "Memory Q5"
+                };
+                // If it's an array (multi-select), join it
+                const val = Array.isArray(answers[id]) ? answers[id].join(', ') : answers[id];
+                memoryFields[fieldMap[id]] = val;
+            }
+        });
+
         const fields = {
             "Answers": JSON.stringify(fullAnswers),
             "Optional Details": JSON.stringify(fullOptionalText),
             "EOS Result": eosResult,
             "Status": "Completed",
-            "Completed At": new Date().toISOString()
+            "Completed At": new Date().toISOString(),
+            ...memoryFields
         };
 
         await table.update([

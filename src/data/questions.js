@@ -25,6 +25,17 @@ export const questions = [
         placeholder: "Add nuance if you want..."
     },
     {
+        id: 'm5',
+        category: "Memory",
+        text: "Some people process by talking through the same thing multiple times. Others mention something once and it's done. Which is more like you?",
+        options: [
+            { id: 'a', text: "I circle back—if I mention it again, it's still alive", value: "I circle back" },
+            { id: 'b', text: "Once is usually enough—if I said it, I've processed it", value: "Once is enough" },
+            { id: 'c', text: "Depends on the topic", value: "Depends" }
+        ],
+        placeholder: "Add nuance if you want..."
+    },
+    {
         id: 3,
         category: "Communication Style",
         text: "How do you like information presented? (Pick all that apply)",
@@ -52,6 +63,19 @@ export const questions = [
         placeholder: "Add nuance if you want..."
     },
     {
+        id: 'm2',
+        category: "Memory",
+        text: "When something really matters to you—not just interesting, but significant—how would I know from the outside?",
+        options: [
+            { id: 'a', text: "You'll know—I get intense or explicit", value: "Intense/Explicit" },
+            { id: 'b', text: "I circle back to it, sometimes without realizing", value: "Circle back" },
+            { id: 'c', text: "I get quieter or more careful with my words", value: "Quieter/Careful" },
+            { id: 'd', text: "I state it plainly, but without drama", value: "Plainly" },
+            { id: 'e', text: "Honestly, it's hard to tell", value: "Hard to tell" }
+        ],
+        placeholder: "Add nuance if you want..."
+    },
+    {
         id: 5,
         category: "Communication Style",
         text: "How would you describe your expertise? (Pick all that apply)",
@@ -74,6 +98,21 @@ export const questions = [
             { id: 'b', text: "Keep it focused", value: "Keep it focused" },
             { id: 'c', text: "Occasional lightness is fine", value: "Occasional lightness is fine" }
         ],
+        placeholder: "Add nuance if you want..."
+    },
+    {
+        id: 'm1',
+        category: "Memory",
+        text: "Which areas of your life would it help me most to track closely? (Pick your top two)",
+        multiSelect: true,
+        options: [
+            { id: 'a', text: "My work and professional life", value: "Work/Professional" },
+            { id: 'b', text: "My relationships and the people who matter to me", value: "Relationships" },
+            { id: 'c', text: "My creative projects and ideas", value: "Creative projects" },
+            { id: 'd', text: "My personal growth and inner life", value: "Personal growth" },
+            { id: 'e', text: "The decisions I'm facing", value: "Decisions" }
+        ],
+        instruction: "Pick your top two",
         placeholder: "Add nuance if you want..."
     },
 
@@ -141,6 +180,18 @@ export const questions = [
         ],
         placeholder: "Add nuance if you want..."
     },
+    {
+        id: 'm3',
+        category: "Memory",
+        text: "Imagine you vent to me about a frustrating day—blowing off steam, not looking for it to be remembered. How should I handle that?",
+        options: [
+            { id: 'a', text: "Remember the details—context is always useful", value: "Remember details" },
+            { id: 'b', text: "Note the theme (\"work is stressful\") but skip the specifics", value: "Note theme only" },
+            { id: 'c', text: "Let it go unless I bring it up again", value: "Let it go" },
+            { id: 'd', text: "Ask me in the moment what I'd prefer", value: "Ask me" }
+        ],
+        placeholder: "Add nuance if you want..."
+    },
 
     // WORK STYLE
     {
@@ -203,6 +254,17 @@ export const questions = [
             { id: 'd', text: "\"What's making you excited about this?\"", value: "What's exciting" }
         ],
         instruction: "Select all that apply",
+        placeholder: "Add nuance if you want..."
+    },
+    {
+        id: 'm4',
+        category: "Memory",
+        text: "You share something vulnerable—a fear, something from your past, something you're struggling with. A month later, a related topic comes up. Should I:",
+        options: [
+            { id: 'a', text: "Connect them—that context helps you help me", value: "Connect them" },
+            { id: 'b', text: "Tread carefully—reference it gently if it seems relevant", value: "Tread carefully" },
+            { id: 'c', text: "Wait for me to bring it up—don't surface it on your own", value: "Wait for me" }
+        ],
         placeholder: "Add nuance if you want..."
     }
 ];

@@ -198,59 +198,126 @@ export function generateEOS(answers, sliders = { challengeIntensity: 70, directn
 
     // --- BUILD SECTIONS ---
 
+
+
+    const formatMemory = () => {
+        const m1 = getAns('m1');
+        const m2 = getAns('m2');
+        const m3 = getAns('m3');
+        const m4 = getAns('m4');
+        const m5 = getAns('m5');
+
+        if (!m1 && !m2 && !m3 && !m4 && !m5) return "";
+
+        let lines = [];
+
+        if (m1 && m1.length > 0) {
+            const map = {
+                "Work/Professional": "professional trajectory",
+                "Relationships": "key relationships",
+                "Creative projects": "creative threads",
+                "Personal growth": "internal growth",
+                "Decisions": "active decisions"
+            };
+            const areas = m1.map(v => map[v] || v).join(" and ");
+            lines.push(`- ** Track closely:** ${areas} `);
+        }
+
+        if (m2) {
+            const map = {
+                "Intense/Explicit": "When something matters, I'll be explicit or intense",
+                "Circle back": "Significance shows up in repetition",
+                "Quieter/Careful": "Look for quietness or careful phrasing",
+                "Plainly": "I state significant things plainly",
+                "Hard to tell": "It's hard to tell; ask if unsure"
+            };
+            lines.push(`- ** Significance:** ${map[m2] || m2} `);
+        }
+
+        if (m5) {
+            const map = {
+                "I circle back": "If I repeat myself, the topic is still alive",
+                "Once is enough": "Once is enough; I don't need to loop",
+                "Depends": "Processing style varies by topic"
+            };
+            lines.push(`- ** Repetition:** ${map[m5] || m5} `);
+        }
+
+        if (m3) {
+            const map = {
+                "Remember details": "Keep the details of venting; context is useful",
+                "Note theme only": "Note the themes of venting, discard the specifics",
+                "Let it go": "Treat venting as ephemeral; let it go",
+                "Ask me": "Ask me if I want venting remembered"
+            };
+            lines.push(`- ** Venting:** ${map[m3] || m3} `);
+        }
+
+        if (m4) {
+            const map = {
+                "Connect them": "Connect past vulnerability to present context",
+                "Tread carefully": "Reference past vulnerability gently",
+                "Wait for me": "Don't surface past vulnerability unless I do"
+            };
+            lines.push(`- ** Vulnerability:** ${map[m4] || m4} `);
+        }
+
+        if (lines.length === 0) return "";
+        return `\n\n### Memory & Attention\n${lines.join('\n')} `;
+    };
+
     const preferences = `## MY PREFERENCES
 
 ### Communication Style
-- **Tone:** ${formatTone(getAns(1))}
-- **Depth:** ${mapSingle(getAns(2), depthMap)}
-- **Formatting:** ${Array.isArray(getAns(3)) ? getAns(3).join(", ") : getAns(3)}
-- **Explanations:** ${formatExplanations(getAns(4))}
-- **Expertise level:** ${formatExpertise(getAns(5))}
-- **Humor:** ${mapSingle(getAns(6), humorMap)}
+        - ** Tone:** ${formatTone(getAns(1))}
+- ** Depth:** ${mapSingle(getAns(2), depthMap)}
+- ** Formatting:** ${Array.isArray(getAns(3)) ? getAns(3).join(", ") : getAns(3)}
+- ** Explanations:** ${formatExplanations(getAns(4))}
+- ** Expertise level:** ${formatExpertise(getAns(5))}
+- ** Humor:** ${mapSingle(getAns(6), humorMap)}
 
 ### Problem Solving
-- **Help style:** ${formatHelpStyle(getAns(7))}
-- **Learning:** ${mapSingle(getAns(8), learningMap)}
-- **Autonomy:** ${mapSingle(getAns(9), autonomyMap)}
+        - ** Help style:** ${formatHelpStyle(getAns(7))}
+- ** Learning:** ${mapSingle(getAns(8), learningMap)}
+- ** Autonomy:** ${mapSingle(getAns(9), autonomyMap)}
 
 ### Emotional Support
-- **Frustration:** ${formatFrustration(getAns(10))}
-- **Check-ins:** ${mapSingle(getAns(11), checkinsMap)}
+        - ** Frustration:** ${formatFrustration(getAns(10))}
+- ** Check - ins:** ${mapSingle(getAns(11), checkinsMap)}
 
 ### Work Style
-- **Tangents:** ${mapSingle(getAns(12), tangentsMap)}
-- **Deadlines:** ${mapSingle(getAns(13), deadlinesMap)}
-- **Completion:** ${formatCompletion(getAns(14))}
-- **Goals:** ${mapSingle(getAns(15), goalsMap)}
+        - ** Tangents:** ${mapSingle(getAns(12), tangentsMap)}
+- ** Deadlines:** ${mapSingle(getAns(13), deadlinesMap)}
+- ** Completion:** ${formatCompletion(getAns(14))}
+- ** Goals:** ${mapSingle(getAns(15), goalsMap)}
 
-### Role
-- **Default role:** ${formatRole(getAns(16))}`;
+### Role${formatRole(getAns(16)).startsWith('\n') ? formatRole(getAns(16)) : `\n- **Default role:** ${formatRole(getAns(16))}`}${formatMemory()} `;
 
     // --- OPTIONAL CONTEXT ---
 
     let optionalSection = '';
     if (finalText && finalText.trim()) {
-        optionalSection = `\n\n---\n\n## ADDITIONAL CONTEXT\n${finalText}`;
+        optionalSection = `\n\n-- -\n\n## ADDITIONAL CONTEXT\n${finalText} `;
     }
 
     // --- ASSEMBLE ---
 
-    return `# My Emotional Operating System (EOS)
+    return `# My Emotional Operating System(EOS)
 
----
+    ---
 
-${CORE_BEHAVIORS}
+        ${CORE_BEHAVIORS}
 
----
+    ---
 
-${preferences}
+        ${preferences}
 
----
+    ---
 
 ## DEFAULTS
 ${defaultsText}
 
----
+    ---
 
-${ONGOING_DISCOVERY}${optionalSection}`;
+        ${ONGOING_DISCOVERY}${optionalSection} `;
 }
