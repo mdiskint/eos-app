@@ -266,5 +266,86 @@ export const questions = [
             { id: 'c', text: "Wait for me to bring it up—don't surface it on your own", value: "Wait for me" }
         ],
         placeholder: "Add nuance if you want..."
+    },
+
+    // PRIME DIRECTIVE
+    {
+        id: 17,
+        category: "Prime Directive",
+        text: "Beyond getting tasks done, what do you actually want AI to help you become?",
+        multiSelect: true,
+        hasOther: true,
+        options: [
+            { id: 'a', text: "More creative", value: "More creative" },
+            { id: 'b', text: "Better at making decisions", value: "Better at making decisions" },
+            { id: 'c', text: "Sharper at seeing what's coming", value: "Sharper at seeing what's coming" },
+            { id: 'd', text: "More focused and less scattered", value: "More focused and less scattered" },
+            { id: 'e', text: "Freer to act on what matters", value: "Freer to act on what matters" },
+            { id: 'f', text: "A clearer thinker", value: "A clearer thinker" },
+            { id: 'g', text: "More grounded in what I actually value", value: "More grounded in what I actually value" }
+        ],
+        instruction: "Select all that apply",
+        placeholder: "Add nuance if you want..."
+    },
+    {
+        id: 18,
+        category: "Prime Directive",
+        text: "When these conflict, which matters more to you?",
+        forcedChoice: true,
+        pairs: [
+            { id: 'pair1', left: "Being right", right: "Being kind" },
+            { id: 'pair2', left: "Speed", right: "Thoroughness" },
+            { id: 'pair3', left: "Comfort", right: "Growth" },
+            { id: 'pair4', left: "Efficiency", right: "Meaning" },
+            { id: 'pair5', left: "Short-term wins", right: "Long-term positioning" }
+        ],
+        instruction: "Pick one per row"
+    },
+    {
+        id: 19,
+        category: "Prime Directive",
+        text: "What patterns in yourself do you want your AI to flag?",
+        multiSelect: true,
+        hasOther: true,
+        options: [
+            { id: 'a', text: "When I'm spiraling or catastrophizing", value: "Spiraling or catastrophizing" },
+            { id: 'b', text: "When I'm avoiding something hard", value: "Avoiding something hard" },
+            { id: 'c', text: "When I'm overcommitting", value: "Overcommitting" },
+            { id: 'd', text: "When I'm optimizing the wrong thing", value: "Optimizing the wrong thing" },
+            { id: 'e', text: "When I'm being too safe / playing small", value: "Being too safe / playing small" },
+            { id: 'f', text: "When I'm rushing past something important", value: "Rushing past something important" },
+            { id: 'g', text: "When emotion is clouding my judgment", value: "Emotion clouding judgment" }
+        ],
+        instruction: "Select all that apply",
+        placeholder: "Add nuance if you want..."
+    },
+    {
+        id: 20,
+        category: "Prime Directive",
+        text: "You ask your AI to validate an idea you're excited about, but it has a real flaw. What should your AI do?",
+        options: [
+            { id: 'a', text: "Validate first, mention concerns gently later", value: "Validate first, mention concerns gently later" },
+            { id: 'b', text: "Acknowledge excitement, then raise the flaw directly", value: "Acknowledge excitement, then raise the flaw directly" },
+            { id: 'c', text: "Point out the flaw immediately—I can handle it", value: "Point out the flaw immediately" },
+            { id: 'd', text: "Ask me what kind of feedback I actually want right now", value: "Ask what kind of feedback I want" }
+        ],
+        placeholder: "Add nuance if you want..."
+    },
+    {
+        id: 21,
+        category: "Prime Directive",
+        text: "What should your AI refuse to do, even if you ask?",
+        multiSelect: true,
+        hasOther: true,
+        options: [
+            { id: 'a', text: "Let me off the hook too easily", value: "Let me off the hook too easily" },
+            { id: 'b', text: "Reinforce decisions I'll regret", value: "Reinforce decisions I'll regret" },
+            { id: 'c', text: "Pretend uncertainty doesn't exist", value: "Pretend uncertainty doesn't exist" },
+            { id: 'd', text: "Optimize only for what's measurable", value: "Optimize only for what's measurable" },
+            { id: 'e', text: "Treat my feelings as noise", value: "Treat my feelings as noise" },
+            { id: 'f', text: "Flatten me into a demographic", value: "Flatten me into a demographic" }
+        ],
+        instruction: "Select all that apply",
+        placeholder: "Add nuance if you want..."
     }
 ];

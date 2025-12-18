@@ -8,6 +8,7 @@ const Quiz = () => {
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [answers, setAnswers] = useState({});
     const [optionalText, setOptionalText] = useState({});
+    const [otherText, setOtherText] = useState({}); // For "Other" option text inputs
     const [justSelected, setJustSelected] = useState(false);
     const [step, setStep] = useState('quiz'); // 'quiz', 'calibration', 'final'
     const [sliders, setSliders] = useState({
@@ -25,6 +26,11 @@ const Quiz = () => {
     // Helper to check if current question has an answer
     const hasAnswered = () => {
         const ans = answers[question?.id];
+        if (question?.forcedChoice) {
+            // All pairs must be answered
+            if (!ans || typeof ans !== 'object') return false;
+            return question.pairs.every(pair => ans[pair.id]);
+        }
         if (question?.multiSelect) {
             return ans && ans.length > 0;
         }
@@ -54,6 +60,35 @@ const Quiz = () => {
             setJustSelected(true);
             setTimeout(() => setJustSelected(false), 2000);
         }
+    };
+
+    // Handler for forced-choice pair selection
+    const handlePairSelect = (pairId, side) => {
+        const currentPairs = answers[question.id] || {};
+        setAnswers({
+            ...answers,
+            [question.id]: {
+                ...currentPairs,
+                [pairId]: side
+            }
+        });
+    };
+
+    // Handler for "Other" text input
+    const handleOtherTextChange = (e) => {
+        setOtherText({
+            ...otherText,
+            [question.id]: e.target.value
+        });
+    };
+
+    // Check if "Other" is selected for current question
+    const isOtherSelected = () => {
+        const ans = answers[question?.id];
+        if (question?.multiSelect) {
+            return ans?.includes('Other');
+        }
+        return ans === 'Other';
     };
 
     const handleOptionalTextChange = (e) => {
@@ -89,6 +124,7 @@ const Quiz = () => {
     const finishQuiz = () => {
         localStorage.setItem('eos_answers', JSON.stringify(answers));
         localStorage.setItem('eos_optional_text', JSON.stringify(optionalText));
+        localStorage.setItem('eos_other_text', JSON.stringify(otherText));
         localStorage.setItem('eos_sliders', JSON.stringify(sliders));
         localStorage.setItem('eos_final_text', finalText);
         navigate('/results');
@@ -172,42 +208,107 @@ const Quiz = () => {
                                         </p>
                                     )}
 
-                                    <div className="quiz-options">
-                                        {question.options.map((option) => {
-                                            const currentAns = answers[question.id];
-                                            const isSelected = question.multiSelect
-                                                ? currentAns?.includes(option.value)
-                                                : currentAns === option.value;
+                                    {/* Forced Choice Pairs UI */}
+                                    {question.forcedChoice ? (
+                                        <div className="quiz-pairs">
+                                            {question.pairs.map((pair) => {
+                                                const currentPairs = answers[question.id] || {};
+                                                const selected = currentPairs[pair.id];
 
-                                            return (
-                                                <button
-                                                    key={option.id}
-                                                    onClick={() => handleOptionSelect(option.value)}
-                                                    className={`quiz-option ${isSelected ? 'quiz-option-selected' : ''}`}
-                                                >
-                                                    <span className="quiz-option-text">
-                                                        {option.text}
-                                                    </span>
-                                                </button>
-                                            );
-                                        })}
-                                    </div>
+                                                return (
+                                                    <div key={pair.id} className="quiz-pair-row">
+                                                        <button
+                                                            onClick={() => handlePairSelect(pair.id, 'left')}
+                                                            className={`quiz-pair-option quiz-pair-left ${selected === 'left' ? 'quiz-pair-selected' : ''}`}
+                                                        >
+                                                            {pair.left}
+                                                        </button>
+                                                        <span className="quiz-pair-vs">or</span>
+                                                        <button
+                                                            onClick={() => handlePairSelect(pair.id, 'right')}
+                                                            className={`quiz-pair-option quiz-pair-right ${selected === 'right' ? 'quiz-pair-selected' : ''}`}
+                                                        >
+                                                            {pair.right}
+                                                        </button>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    ) : (
+                                        /* Standard Options UI */
+                                        <div className="quiz-options">
+                                            {question.options.map((option) => {
+                                                const currentAns = answers[question.id];
+                                                const isSelected = question.multiSelect
+                                                    ? currentAns?.includes(option.value)
+                                                    : currentAns === option.value;
 
-                                    {/* Optional Text Field */}
-                                    <div className={`quiz-optional-field ${justSelected ? 'quiz-optional-field-highlight' : ''}`}>
-                                        <label htmlFor={`optional-${question.id}`} className="quiz-optional-label">
-                                            Want to add more detail? (optional)
-                                        </label>
-                                        <textarea
-                                            ref={textareaRef}
-                                            id={`optional-${question.id}`}
-                                            className="quiz-optional-textarea"
-                                            placeholder={question.placeholder || "Add any specifics or nuances here..."}
-                                            value={optionalText[question.id] || ''}
-                                            onChange={handleOptionalTextChange}
-                                            rows={3}
-                                        />
-                                    </div>
+                                                return (
+                                                    <button
+                                                        key={option.id}
+                                                        onClick={() => handleOptionSelect(option.value)}
+                                                        className={`quiz-option ${isSelected ? 'quiz-option-selected' : ''}`}
+                                                    >
+                                                        <span className="quiz-option-text">
+                                                            {option.text}
+                                                        </span>
+                                                    </button>
+                                                );
+                                            })}
+
+                                            {/* "Other" Option for hasOther questions */}
+                                            {question.hasOther && (
+                                                <>
+                                                    <button
+                                                        onClick={() => handleOptionSelect('Other')}
+                                                        className={`quiz-option ${isOtherSelected() ? 'quiz-option-selected' : ''}`}
+                                                    >
+                                                        <span className="quiz-option-text">Other</span>
+                                                    </button>
+
+                                                    {/* Expandable text input when "Other" is selected */}
+                                                    <AnimatePresence>
+                                                        {isOtherSelected() && (
+                                                            <motion.div
+                                                                initial={{ opacity: 0, height: 0 }}
+                                                                animate={{ opacity: 1, height: 'auto' }}
+                                                                exit={{ opacity: 0, height: 0 }}
+                                                                transition={{ duration: 0.2 }}
+                                                                className="quiz-other-input-wrapper"
+                                                            >
+                                                                <input
+                                                                    type="text"
+                                                                    className="quiz-other-input"
+                                                                    placeholder="Tell us more (optional)..."
+                                                                    value={otherText[question.id] || ''}
+                                                                    onChange={handleOtherTextChange}
+                                                                    autoFocus
+                                                                />
+                                                            </motion.div>
+                                                        )}
+                                                    </AnimatePresence>
+                                                </>
+                                            )}
+                                        </div>
+                                    )}
+
+                                    {/* Optional Text Field - not shown for forced-choice questions */}
+                                    {!question.forcedChoice && (
+                                        <div className={`quiz-optional-field ${justSelected ? 'quiz-optional-field-highlight' : ''}`}>
+                                            <label htmlFor={`optional-${question.id}`} className="quiz-optional-label">
+                                                Want to add more detail? (optional)
+                                            </label>
+                                            <textarea
+                                                ref={textareaRef}
+                                                id={`optional-${question.id}`}
+                                                className="quiz-optional-textarea"
+                                                placeholder={question.placeholder || "Add any specifics or nuances here..."}
+                                                value={optionalText[question.id] || ''}
+                                                onChange={handleOptionalTextChange}
+                                                rows={3}
+                                            />
+                                        </div>
+                                    )}
                                 </motion.div>
                             </AnimatePresence>
                         </>

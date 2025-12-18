@@ -27,7 +27,7 @@ export const createQuizSession = async (email) => {
     }
 };
 
-export const completeQuizSession = async (recordId, answers, eosResult, optionalText = {}, sliders = {}, finalText = "") => {
+export const completeQuizSession = async (recordId, answers, eosResult, optionalText = {}, sliders = {}, finalText = "", otherText = {}) => {
     if (!recordId) return;
 
     try {
@@ -37,9 +37,10 @@ export const completeQuizSession = async (recordId, answers, eosResult, optional
             calibration: sliders
         };
 
-        // Merge final text into optional details
+        // Merge final text and other text into optional details
         const fullOptionalText = {
             ...optionalText,
+            other_text: otherText,
             final_context: finalText
         };
 

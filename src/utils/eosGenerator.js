@@ -6,9 +6,10 @@ import { CORE_BEHAVIORS, ONGOING_DISCOVERY } from '../data/coreBehaviors.js';
  * @param {Object} sliders - Map of slider names -> values { challengeIntensity, directness }
  * @param {Object} optionalText - Optional user-provided context per question
  * @param {string} finalText - Final catch-all text
+ * @param {Object} otherText - Text input for "Other" options
  * @returns {string} - Complete EOS markdown document
  */
-export function generateEOS(answers, sliders = { challengeIntensity: 70, directness: 70 }, optionalText = {}, finalText = "") {
+export function generateEOS(answers, sliders = { challengeIntensity: 70, directness: 70 }, optionalText = {}, finalText = "", otherText = {}) {
 
     // Helper to get answer(s). Returns array if multi-select, string if single.
     const getAns = (id) => answers[id];
@@ -119,6 +120,73 @@ export function generateEOS(answers, sliders = { challengeIntensity: 70, directn
         if (hasProblem && hasExciting) return "Thinking partner and coach";
         if (hasLetsDoIt && hasMakeBetter) return "Supportive collaborator who builds on ideas";
         return vals.join(", ");
+    };
+
+    // --- PRIME DIRECTIVE FORMATTERS ---
+
+    // Helper to include "Other" text if provided
+    const withOther = (vals, questionId) => {
+        if (!vals || !Array.isArray(vals)) return vals;
+        const filtered = vals.filter(v => v !== 'Other');
+        if (vals.includes('Other') && otherText[questionId]) {
+            filtered.push(otherText[questionId]);
+        }
+        return filtered;
+    };
+
+    const formatPurpose = (vals) => {
+        if (!vals || vals.length === 0) return null;
+        const items = withOther(vals, 17);
+        if (items.length === 1) return items[0];
+        if (items.length === 2) return `${items[0]} and ${items[1].toLowerCase()}`;
+        const last = items.pop();
+        return `${items.join(', ')}, and ${last.toLowerCase()}`;
+    };
+
+    const formatTradeoffs = (pairs) => {
+        if (!pairs || typeof pairs !== 'object') return null;
+        const pairLabels = {
+            pair1: { left: "Being right", right: "Being kind" },
+            pair2: { left: "Speed", right: "Thoroughness" },
+            pair3: { left: "Comfort", right: "Growth" },
+            pair4: { left: "Efficiency", right: "Meaning" },
+            pair5: { left: "Short-term wins", right: "Long-term positioning" }
+        };
+
+        const choices = [];
+        Object.keys(pairLabels).forEach(pairId => {
+            if (pairs[pairId]) {
+                const side = pairs[pairId];
+                const label = pairLabels[pairId][side];
+                choices.push(label);
+            }
+        });
+
+        if (choices.length === 0) return null;
+        return choices;
+    };
+
+    const formatGuardrails = (vals) => {
+        if (!vals || vals.length === 0) return null;
+        const items = withOther(vals, 19);
+        return items;
+    };
+
+    const formatPushback = (val) => {
+        if (!val) return null;
+        const map = {
+            "Validate first, mention concerns gently later": "Validate first, then gently raise concerns",
+            "Acknowledge excitement, then raise the flaw directly": "Acknowledge my excitement, then name the flaw directly",
+            "Point out the flaw immediately": "Point out the flaw immediately—I can handle it",
+            "Ask what kind of feedback I want": "Ask what kind of feedback I want in the moment"
+        };
+        return map[val] || val;
+    };
+
+    const formatNonNegotiables = (vals) => {
+        if (!vals || vals.length === 0) return null;
+        const items = withOther(vals, 21);
+        return items;
     };
 
     // --- SINGLE-SELECT MAPPINGS ---
@@ -266,6 +334,43 @@ export function generateEOS(answers, sliders = { challengeIntensity: 70, directn
         return `\n\n### Memory & Attention\n${lines.join('\n')} `;
     };
 
+    const formatPrimeDirective = () => {
+        const purpose = formatPurpose(getAns(17));
+        const tradeoffs = formatTradeoffs(getAns(18));
+        const guardrails = formatGuardrails(getAns(19));
+        const pushback = formatPushback(getAns(20));
+        const nonNegotiables = formatNonNegotiables(getAns(21));
+
+        // If no Prime Directive answers, return empty
+        if (!purpose && !tradeoffs && !guardrails && !pushback && !nonNegotiables) {
+            return "";
+        }
+
+        let lines = [];
+
+        if (purpose) {
+            lines.push(`### Purpose\nBeyond tasks, help me become: ${purpose}`);
+        }
+
+        if (tradeoffs && tradeoffs.length > 0) {
+            lines.push(`### When Values Conflict\nI prioritize:\n${tradeoffs.map(t => `- ${t}`).join('\n')}`);
+        }
+
+        if (guardrails && guardrails.length > 0) {
+            lines.push(`### Patterns to Flag\nCall me out when you notice:\n${guardrails.map(g => `- ${g}`).join('\n')}`);
+        }
+
+        if (pushback) {
+            lines.push(`### On Flawed Ideas\n${pushback}`);
+        }
+
+        if (nonNegotiables && nonNegotiables.length > 0) {
+            lines.push(`### Non-Negotiables\nEven if I ask, don't:\n${nonNegotiables.map(n => `- ${n}`).join('\n')}`);
+        }
+
+        return `\n\n---\n\n## PRIME DIRECTIVE\n\n${lines.join('\n\n')}`;
+    };
+
     const preferences = `## MY PREFERENCES
 
 ### Communication Style
@@ -302,22 +407,24 @@ export function generateEOS(answers, sliders = { challengeIntensity: 70, directn
 
     // --- ASSEMBLE ---
 
-    return `# My Emotional Operating System(EOS)
+    const primeDirective = formatPrimeDirective();
 
-    ---
+    return `# My Emotional Operating System (EOS)
 
-        ${CORE_BEHAVIORS}
+---
 
-    ---
+${CORE_BEHAVIORS}
 
-        ${preferences}
+---
 
-    ---
+${preferences}${primeDirective}
+
+---
 
 ## DEFAULTS
 ${defaultsText}
 
-    ---
+---
 
-        ${ONGOING_DISCOVERY}${optionalSection} `;
+${ONGOING_DISCOVERY}${optionalSection}`;
 }
