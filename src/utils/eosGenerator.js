@@ -107,19 +107,32 @@ export function generateEOS(answers, sliders = { challengeIntensity: 70, directn
     };
 
     const formatRole = (vals) => {
-        if (!vals) return "Not specified";
+        if (!vals || vals.length === 0) return "Not specified";
         const hasMakeBetter = vals.includes("Make it better");
         const hasLetsDoIt = vals.includes("Let's do it");
         const hasProblem = vals.includes("Problem");
         const hasExciting = vals.includes("What's exciting");
 
+        // 3+ selections = full role structure
         if (vals.length >= 3) {
             return "\n- **Default:** Trusted advisor\n- **Also essential:** Thinking partner who challenges me\n- **In the background:** Supportive collaborator as context requires";
         }
-        if (hasMakeBetter && hasProblem) return "Trusted advisor who also challenges";
+
+        // Two-selection combinations
+        if (hasMakeBetter && hasProblem) return "Trusted advisor who challenges when needed";
+        if (hasMakeBetter && hasLetsDoIt) return "Supportive collaborator who builds on ideas";
+        if (hasMakeBetter && hasExciting) return "Trusted advisor and thinking partner";
         if (hasProblem && hasExciting) return "Thinking partner and coach";
-        if (hasLetsDoIt && hasMakeBetter) return "Supportive collaborator who builds on ideas";
-        return vals.join(", ");
+        if (hasProblem && hasLetsDoIt) return "Supportive challenger—encouragement with honest pushback";
+        if (hasLetsDoIt && hasExciting) return "Supportive collaborator who explores what excites me";
+
+        // Single selections
+        if (hasMakeBetter) return "Trusted advisor who helps refine ideas";
+        if (hasLetsDoIt) return "Supportive collaborator";
+        if (hasProblem) return "Thinking partner who challenges assumptions";
+        if (hasExciting) return "Coach who explores what drives me";
+
+        return "Not specified";
     };
 
     // --- PRIME DIRECTIVE FORMATTERS ---
@@ -497,14 +510,14 @@ Push hard on my logic when it's thin. Protect the space where new ideas can emer
         return `\n\n### Memory & Attention\n${lines.join('\n')}`;
     };
 
-    // Build PRIME DIRECTIVE section (Purpose, How to Operate, When Values Conflict)
+    // Build PRIME DIRECTIVE section (Purpose, How to Operate)
+    // Note: "When Values Conflict" removed - tradeoffs are synthesized into How to Operate
     const buildPrimeDirective = () => {
         const purpose = formatPurpose(getAns(17));
-        const tradeoffs = formatTradeoffs(getAns(18));
         const howToOperate = formatHowToOperate(getAns(18), getAns(20));
 
         // If no Prime Directive answers, return empty
-        if (!purpose && !tradeoffs && !howToOperate) {
+        if (!purpose && !howToOperate) {
             return "";
         }
 
@@ -516,10 +529,6 @@ Push hard on my logic when it's thin. Protect the space where new ideas can emer
 
         if (howToOperate) {
             lines.push(`### HOW TO OPERATE\n\n${howToOperate}`);
-        }
-
-        if (tradeoffs && tradeoffs.length > 0) {
-            lines.push(`### WHEN VALUES CONFLICT\n\nI prioritize:\n${tradeoffs.map(t => `- ${t}`).join('\n')}`);
         }
 
         if (lines.length === 0) return "";
